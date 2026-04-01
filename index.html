@@ -3,25 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap Digital 2026 | Pacto Global v3 &rarr; v4</title>
+    <title>Planejamento Estratégico 2026 | Pacto Global da ONU — Rede Brasil</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F3F4F6; color: #1f2937; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Roboto', system-ui, sans-serif; background-color: #0f2942; color: #E2E8F0; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Cores Institucionais */
+        /* Design System: Red Bull / Pacto Global */
         :root {
-            --ungc-blue: #009EDB; /* Azul ONU Bright */
-            --ungc-dark: #1E3250; /* Azul Corporativo */
-            --ungc-gold: #D4AF37; /* Acento Premium */
+            --ungc-blue: #009EDB;
+            --ungc-dark: #1E3250;
+            --ungc-gold: #CCB146;
+            --ungc-red: #EC3740;
+            --ungc-green: #297D6D;
+            --ungc-purple: #6E417A;
+            --ungc-surface: #1E3250;
+            --ungc-footer: #0f2942;
+            --ungc-footer-accent: #1a5276;
         }
 
         /* --- SCROLLBAR PERSONALIZADA --- */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #F1F5F9; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--ungc-blue); }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4C6B8B; border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--ungc-gold); }
 
         /* --- ROADMAP RESPONSIVO --- */
         .roadmap-container { position: relative; padding-left: 0; }
@@ -65,9 +72,9 @@
         .tag-dados { background-color: #ECFDF5; color: #059669; }
         .tag-page { background-color: #F3F4F6; color: #4B5563; border: 1px solid #E5E7EB; }
         
-        .component-card { background: white; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative; }
-        .component-card:hover { border-color: var(--ungc-gold); box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.2); transform: translateY(-3px); }
-        .component-header { padding: 1.25rem; border-bottom: 1px solid #F3F4F6; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; }
+        .component-card { background: var(--ungc-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; overflow: hidden; transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1); cursor: pointer; position: relative; }
+        .component-card:hover { border-color: var(--ungc-gold); box-shadow: 0 20px 40px -15px rgba(10,25,47,0.3); transform: translateY(-4px); }
+        .component-header { padding: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.06); background: #162840; display: flex; justify-content: space-between; align-items: center; }
         .component-body { padding: 1.25rem; }
 
         /* Modal Styles Responsive */
@@ -85,16 +92,16 @@
         @media (min-width: 768px) { .preview-container { padding: 2rem; } }
 
         /* Tabs Sticky Logic */
-        .sticky-tabs { position: sticky; top: 64px; z-index: 40; background: rgba(243, 244, 246, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #E5E7EB; }
-        .tab-btn { color: #6B7280; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; padding-bottom: 1rem; padding-top: 1rem; }
-        .tab-btn:hover { color: var(--ungc-dark); }
-        .tab-btn.active { color: var(--ungc-dark); border-bottom-color: var(--ungc-dark); font-weight: 800; }
+        .sticky-tabs { position: sticky; top: 52px; z-index: 40; padding: 4px 0; }
+        .tab-btn { color: rgba(255,255,255,0.5); border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; padding-bottom: 0.6rem; padding-top: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; }
+        .tab-btn:hover { color: var(--ungc-gold); }
+        .tab-btn.active { color: var(--ungc-gold); border-bottom-color: var(--ungc-gold); font-weight: 900; }
 
         /* Sitemap Table */
         .seo-table { min-width: 600px; } /* Força scroll horizontal em mobile se necessário */
-        .seo-table th { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.05em; color: #6B7280; background: #F9FAFB; padding: 0.75rem 1rem; text-align: left; font-weight: 700; }
-        .seo-table td { padding: 1rem; border-top: 1px solid #E5E7EB; font-size: 0.85rem; color: #374151; }
-        .seo-badge { font-size: 0.65rem; padding: 2px 6px; rounded: 4px; font-weight: 700; text-transform: uppercase; }
+        .seo-table th { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.5); background: #162840; padding: 0.75rem 1rem; text-align: left; font-weight: 700; }
+        .seo-table td { padding: 1rem; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; color: #AECFE6; }
+        .seo-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
 
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -107,12 +114,12 @@
         /* ========================================== */
         /* GANTT CHART                                */
         /* ========================================== */
-        .gantt-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #E5E7EB; background: white; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .gantt-wrapper { overflow-x: auto; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: var(--ungc-surface); -webkit-overflow-scrolling: touch; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
         .gantt-inner { min-width: 860px; position: relative; }
         .gantt-body { position: relative; }
 
         /* Month header */
-        .gantt-month-header { display: grid; grid-template-columns: 200px repeat(12, 1fr); background: #1E3250; border-bottom: 3px solid #009EDB; position: sticky; top: 0; z-index: 10; }
+        .gantt-month-header { display: grid; grid-template-columns: 200px repeat(12, 1fr); background: #162840; border-bottom: 3px solid var(--ungc-gold); position: sticky; top: 0; z-index: 10; }
         .gantt-label-header { padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-right: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; }
         .gantt-month-cell { padding: 10px 4px; text-align: center; color: rgba(255,255,255,0.55); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid rgba(255,255,255,0.05); position: relative; transition: background 0.2s; }
         .gantt-month-cell.is-current { color: #009EDB; font-weight: 900; background: rgba(0,158,219,0.12); }
@@ -125,18 +132,18 @@
         .gantt-phase-cell.active-month { border-bottom: 2px solid currentColor; }
 
         /* Task rows */
-        .gantt-task-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid #F1F5F9; transition: background 0.15s; position: relative; }
-        .gantt-task-row:hover { background: #F8FAFE; }
-        .gantt-task-row:nth-child(even) { background: #FAFBFC; }
-        .gantt-task-row:nth-child(even):hover { background: #F0F5FB; }
+        .gantt-task-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; position: relative; }
+        .gantt-task-row:hover { background: rgba(255,255,255,0.04); }
+        .gantt-task-row:nth-child(even) { background: rgba(255,255,255,0.02); }
+        .gantt-task-row:nth-child(even):hover { background: rgba(255,255,255,0.05); }
 
-        .gantt-task-label { padding: 10px 14px; border-right: 1px solid #E5E7EB; display: flex; flex-direction: column; gap: 5px; min-height: 58px; justify-content: center; }
-        .gantt-task-name { font-size: 0.72rem; font-weight: 700; color: #1E3250; line-height: 1.25; cursor: text; border-radius: 3px; transition: outline 0.15s; }
-        .gantt-task-name:hover { text-decoration: underline dotted #009EDB; }
+        .gantt-task-label { padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 5px; min-height: 58px; justify-content: center; }
+        .gantt-task-name { font-size: 0.72rem; font-weight: 700; color: #AECFE6; line-height: 1.25; cursor: text; border-radius: 3px; transition: outline 0.15s; }
+        .gantt-task-name:hover { text-decoration: underline dotted var(--ungc-gold); }
 
         .gantt-cells { display: grid; grid-template-columns: repeat(12, 1fr); position: relative; }
-        .gantt-cell { border-right: 1px solid #F1F5F9; min-height: 58px; position: relative; }
-        .gantt-cell.is-current-month { background: rgba(0,158,219,0.03); }
+        .gantt-cell { border-right: 1px solid rgba(255,255,255,0.03); min-height: 58px; position: relative; }
+        .gantt-cell.is-current-month { background: rgba(204,177,70,0.06); }
 
         /* Bar */
         .gantt-bar-container { position: absolute; top: 50%; transform: translateY(-50%); height: 26px; border-radius: 6px; overflow: hidden; cursor: pointer; transition: filter 0.2s, transform 0.2s, box-shadow 0.2s; z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
@@ -158,25 +165,25 @@
         .today-line::after { content: '▼'; position: absolute; top: -4px; left: 50%; transform: translateX(-50%); color: #EC4899; font-size: 0.5rem; }
 
         /* Progress popover */
-        .progress-popover { position: fixed; z-index: 200; background: white; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.18); min-width: 250px; animation: fadeIn 0.15s ease; }
-        .progress-popover h4 { font-size: 0.72rem; font-weight: 800; color: #1E3250; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9; }
-        .progress-slider { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 4px; background: #E5E7EB; outline: none; cursor: pointer; }
-        .progress-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #009EDB; cursor: pointer; box-shadow: 0 2px 6px rgba(0,158,219,0.4); transition: transform 0.15s; }
+        .progress-popover { position: fixed; z-index: 200; background: var(--ungc-surface); border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; padding: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.5); min-width: 250px; animation: fadeIn 0.15s ease; backdrop-filter: blur(20px); }
+        .progress-popover h4 { font-size: 0.72rem; font-weight: 800; color: #AECFE6; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .progress-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; border-radius: 4px; background: #4C6B8B; outline: none; cursor: pointer; }
+        .progress-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ungc-gold); cursor: pointer; box-shadow: 0 2px 6px rgba(204,177,70,0.4); transition: transform 0.15s; }
         .progress-slider::-webkit-slider-thumb:hover { transform: scale(1.25); }
 
-        /* Summary cards */
+        /* Summary cards — Bento Style */
         .gantt-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-        .g-summary-card { background: white; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 3px; transition: border-color 0.2s, box-shadow 0.2s; }
-        .g-summary-card:hover { border-color: #009EDB; box-shadow: 0 4px 16px rgba(0,158,219,0.1); }
-        .g-summary-card .s-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #94A3B8; }
-        .g-summary-card .s-value { font-size: 1.6rem; font-weight: 900; color: #1E3250; line-height: 1; }
-        .g-summary-card .s-sub { font-size: 0.62rem; color: #94A3B8; font-weight: 500; }
+        .g-summary-card { background: var(--ungc-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1); }
+        .g-summary-card:hover { border-color: var(--ungc-gold); box-shadow: 0 20px 40px -15px rgba(10,25,47,0.3); transform: translateY(-4px); }
+        .g-summary-card .s-label { font-size: 0.52rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); }
+        .g-summary-card .s-value { font-size: 1.8rem; font-weight: 900; color: white; line-height: 1; }
+        .g-summary-card .s-sub { font-size: 0.6rem; color: rgba(255,255,255,0.35); font-weight: 500; }
 
         /* Legend */
-        .gantt-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #F1F5F9; }
-        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.62rem; font-weight: 600; color: #64748B; }
-        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-        .legend-hint { margin-left: auto; font-size: 0.58rem; color: #CBD5E1; display: flex; align-items: center; gap: 4px; }
+        .gantt-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.62rem; font-weight: 600; color: rgba(255,255,255,0.45); }
+        .legend-dot { width: 10px; height: 10px; border-radius: 4px; }
+        .legend-hint { margin-left: auto; font-size: 0.58rem; color: rgba(255,255,255,0.25); display: flex; align-items: center; gap: 4px; }
 
         @media (max-width: 640px) {
             .gantt-summary { grid-template-columns: 1fr 1fr; }
@@ -590,66 +597,78 @@
     <!-- FIM TEMPLATES                              -->
     <!-- ========================================== -->
 
-    <!-- HEADER (Sticky) -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm transition-all duration-300">
-        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-[#1E3250] rounded flex items-center justify-center text-white font-bold tracking-tighter shadow-sm">UN</div>
-                <div class="h-6 w-px bg-gray-300"></div>
-                <h1 class="text-[#1E3250] font-bold text-lg tracking-tight leading-none">Roadmap <span class="hidden sm:inline">Estratégico</span></h1>
+    <!-- HEADER (Red Bull Capsule Style) -->
+    <header class="fixed w-full z-50 bg-[#0f2942]/90 backdrop-blur-xl py-3 shadow-[0_10px_30px_rgba(0,0,0,0.3)] border-b border-white/5">
+        <div class="container mx-auto px-4 md:px-8 lg:px-12 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="https://raw.githubusercontent.com/pactoglobal/planejamento_estrategico/main/Brazil_logotype_translation_white.png" alt="Pacto Global" class="h-7 md:h-9 w-auto" onerror="this.style.display='none'"/>
             </div>
-            <div class="text-[10px] md:text-xs font-bold text-white bg-[#009EDB] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-2">
+            <h1 class="text-white font-black text-[10px] md:text-xs uppercase tracking-[0.25em]">Planejamento Estratégico <span class="text-[#CCB146]">2026</span></h1>
+            <div class="text-[9px] font-bold text-[#0f2942] bg-[#CCB146] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-2">
                 <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                 Q1 2026
             </div>
         </div>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+    <main class="flex-grow container mx-auto px-4 md:px-8 lg:px-12 py-8 max-w-7xl pt-24">
 
-        <!-- HERO SECTION -->
-        <section class="bg-[#1E3250] rounded-2xl p-6 md:p-12 text-white shadow-2xl mb-10 relative overflow-hidden">
+        <!-- HERO SECTION (Bento Grid Dark) -->
+        <section class="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-[#1E3250] to-[#162840] p-8 md:p-12 text-white shadow-[0_20px_60px_rgba(0,0,0,0.4)] mb-8 border border-white/5">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none"><pattern id="grid" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.5" fill="white"/></pattern><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#1E3250] via-transparent to-[#1E3250]"></div>
+            </div>
             <div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                    <div class="inline-block bg-white/10 border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full mb-4 tracking-widest uppercase">
-                        Strangler Fig Pattern
-                    </div>
-                    <h2 class="text-3xl md:text-5xl font-black mb-4 tracking-tight leading-tight">De Repositório a <br/><span class="text-[#009EDB]">Hub de Mídia</span></h2>
-                    <p class="text-gray-300 text-sm md:text-lg mb-8 leading-relaxed font-light">
-                        Uma mudança de paradigma focada em <strong>Explorabilidade Radical</strong>, <strong>Mobile-First</strong> e conversão <strong>Zero Atrito</strong>.
+                    <span class="font-bold text-[8px] md:text-[10px] uppercase tracking-[0.2em] mb-3 flex items-center gap-2 text-white/70">
+                        <span class="w-2 h-2 rounded-sm bg-[#CCB146]"></span> Cronograma MKT, Comunicação e Eventos
+                    </span>
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase leading-[0.9] mb-4 drop-shadow-2xl">Planejamento<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#CCB146] to-white">Estratégico</span></h2>
+                    <p class="text-white/50 text-sm md:text-base mb-6 leading-relaxed max-w-lg font-light">
+                        Monitoramento de entregas, módulos e estratégias da frente digital do <strong class="text-white/80">Pacto Global da ONU — Rede Brasil.</strong>
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg border border-white/10 backdrop-blur-sm">
-                            <i data-lucide="layers" class="w-4 h-4 text-[#009EDB]"></i>
-                            <span class="text-xs font-bold uppercase tracking-wide">Arquitetura Híbrida</span>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest text-white/70">
+                            <i data-lucide="users" class="w-4 h-4 text-[#CCB146]"></i> Ana Urquiza · Brenër Pompêo
+                        </div>
+                        <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10 text-xs font-bold uppercase tracking-widest text-white/70">
+                            <i data-lucide="calendar" class="w-4 h-4 text-[#EC3740]"></i> Jan — Dez 2026
                         </div>
                     </div>
                 </div>
-                <!-- Abstract Representation -->
-                <div class="hidden md:flex justify-center items-center relative h-full min-h-[200px]">
-                    <div class="w-48 h-32 border-2 border-dashed border-gray-600 rounded-lg absolute top-0 left-10 bg-[#1E3250] z-0 flex items-center justify-center opacity-50">
-                        <span class="text-gray-500 font-bold text-xs">LEGADO v3</span>
+                <div class="hidden md:grid grid-cols-2 gap-3 max-w-xs ml-auto">
+                    <div class="bg-white/5 rounded-[1.5rem] p-5 border border-white/8 flex flex-col items-center justify-center text-center hover:bg-white/8 transition-all duration-300 hover:-translate-y-1">
+                        <i data-lucide="globe" class="w-6 h-6 text-[#009EDB] mb-2"></i>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-white/50">Site v4</span>
                     </div>
-                    <div class="w-48 h-32 bg-gradient-to-br from-[#009EDB] to-[#006890] rounded-lg shadow-2xl z-10 flex flex-col items-center justify-center relative top-8 right-10 border border-white/20">
-                        <i data-lucide="layout-grid" class="w-8 h-8 text-white mb-2"></i>
-                        <span class="text-white font-bold text-xs">ECOSSISTEMA v4</span>
+                    <div class="bg-white/5 rounded-[1.5rem] p-5 border border-white/8 flex flex-col items-center justify-center text-center hover:bg-white/8 transition-all duration-300 hover:-translate-y-1">
+                        <i data-lucide="megaphone" class="w-6 h-6 text-[#CCB146] mb-2"></i>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-white/50">MKT</span>
+                    </div>
+                    <div class="bg-white/5 rounded-[1.5rem] p-5 border border-white/8 flex flex-col items-center justify-center text-center hover:bg-white/8 transition-all duration-300 hover:-translate-y-1">
+                        <i data-lucide="search" class="w-6 h-6 text-[#297D6D] mb-2"></i>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-white/50">SEO/GEO</span>
+                    </div>
+                    <div class="bg-white/5 rounded-[1.5rem] p-5 border border-white/8 flex flex-col items-center justify-center text-center hover:bg-white/8 transition-all duration-300 hover:-translate-y-1">
+                        <i data-lucide="bar-chart-3" class="w-6 h-6 text-[#6E417A] mb-2"></i>
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-white/50">BI</span>
                     </div>
                 </div>
             </div>
-            <!-- Decorative Pattern -->
-            <div class="absolute right-0 top-0 w-64 h-64 md:w-96 md:h-96 bg-[#009EDB] opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute right-0 top-0 w-64 h-64 md:w-96 md:h-96 bg-[#CCB146] opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
         </section>
 
-        <!-- TABS NAVIGATION (Sticky) -->
+        <!-- TABS NAVIGATION (Glassmorphism Pill) -->
         <div class="sticky-tabs mb-8 overflow-x-auto">
-            <nav class="flex space-x-6 md:space-x-8 min-w-max px-2 md:px-0">
-                <button class="tab-btn active text-sm flex items-center gap-2" data-tab="roadmap">
+            <nav class="flex items-center gap-3 md:gap-4 bg-[#1E3250]/60 backdrop-blur-md rounded-full px-4 md:px-6 py-2.5 border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.15)] min-w-max">
+                <button class="tab-btn active text-[10px] md:text-[11px] flex items-center gap-2" data-tab="roadmap">
                     <i data-lucide="map" class="w-4 h-4"></i>Roadmap MKT
                 </button>
-                <button class="tab-btn text-sm flex items-center gap-2" data-tab="componentes">
+                <button class="tab-btn text-[10px] md:text-[11px] flex items-center gap-2" data-tab="componentes">
                     <i data-lucide="component" class="w-4 h-4"></i>Componentes UI
                 </button>
-                <button class="tab-btn text-sm flex items-center gap-2" data-tab="tecnica">
+                <button class="tab-btn text-[10px] md:text-[11px] flex items-center gap-2" data-tab="tecnica">
                     <i data-lucide="code-2" class="w-4 h-4"></i>Técnico
                 </button>
                 <button class="tab-btn text-sm flex items-center gap-2" data-tab="squad">
@@ -662,16 +681,16 @@
         </div>
 
         <!-- TAB CONTENT: ROADMAP GANTT -->
-        <div id="roadmap" class="tab-content animate-fade-in p-4 rounded-xl" style="background:white;">
+        <div id="roadmap" class="tab-content animate-fade-in p-4 rounded-[2rem]">
 
             <!-- Top Actions -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-4" id="gantt-actions-header">
                 <div class="gantt-summary w-full sm:w-auto" id="gantt-summary" style="margin-bottom:0; flex-grow:1;"></div>
                 <div class="flex gap-2">
-                    <button onclick="downloadGantt('png')" class="flex items-center gap-2 bg-white border border-gray-200 text-[#1E3250] px-3 py-2 rounded-lg text-xs font-bold hover:bg-gray-50 transition shadow-sm h-full whitespace-nowrap">
-                        <i data-lucide="image" class="w-4 h-4 text-[#009EDB]"></i> Baixar PNG
+                    <button onclick="downloadGantt('png')" class="flex items-center gap-2 bg-white/5 border border-white/10 text-white/70 px-3 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 hover:text-[#CCB146] transition shadow-sm h-full whitespace-nowrap">
+                        <i data-lucide="image" class="w-4 h-4"></i> Baixar PNG
                     </button>
-                    <button onclick="downloadGantt('pdf')" class="flex items-center gap-2 bg-[#009EDB] text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-600 transition shadow-sm h-full whitespace-nowrap">
+                    <button onclick="downloadGantt('pdf')" class="flex items-center gap-2 bg-[#CCB146] text-[#0f2942] px-3 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#b89d3e] transition shadow-lg h-full whitespace-nowrap">
                         <i data-lucide="file-down" class="w-4 h-4"></i> Baixar PDF
                     </button>
                 </div>
