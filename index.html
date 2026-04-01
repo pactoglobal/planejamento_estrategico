@@ -103,6 +103,86 @@
         /* Utility Classes for Chevron Rotation */
         .rotate-180 { transform: rotate(180deg); }
         .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+
+        /* ========================================== */
+        /* GANTT CHART                                */
+        /* ========================================== */
+        .gantt-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #E5E7EB; background: white; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .gantt-inner { min-width: 860px; position: relative; }
+        .gantt-body { position: relative; }
+
+        /* Month header */
+        .gantt-month-header { display: grid; grid-template-columns: 200px repeat(12, 1fr); background: #1E3250; border-bottom: 3px solid #009EDB; position: sticky; top: 0; z-index: 10; }
+        .gantt-label-header { padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-right: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; }
+        .gantt-month-cell { padding: 10px 4px; text-align: center; color: rgba(255,255,255,0.55); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid rgba(255,255,255,0.05); position: relative; transition: background 0.2s; }
+        .gantt-month-cell.is-current { color: #009EDB; font-weight: 900; background: rgba(0,158,219,0.12); }
+
+        /* Phase rows */
+        .gantt-phase-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .gantt-phase-label { padding: 8px 14px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: white; display: flex; align-items: center; gap: 6px; border-right: 1px solid rgba(255,255,255,0.15); min-height: 36px; }
+        .gantt-phase-timeline { display: grid; grid-template-columns: repeat(12, 1fr); }
+        .gantt-phase-cell { min-height: 36px; border-right: 1px solid rgba(255,255,255,0.06); }
+        .gantt-phase-cell.active-month { border-bottom: 2px solid currentColor; }
+
+        /* Task rows */
+        .gantt-task-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid #F1F5F9; transition: background 0.15s; position: relative; }
+        .gantt-task-row:hover { background: #F8FAFE; }
+        .gantt-task-row:nth-child(even) { background: #FAFBFC; }
+        .gantt-task-row:nth-child(even):hover { background: #F0F5FB; }
+
+        .gantt-task-label { padding: 10px 14px; border-right: 1px solid #E5E7EB; display: flex; flex-direction: column; gap: 5px; min-height: 58px; justify-content: center; }
+        .gantt-task-name { font-size: 0.72rem; font-weight: 700; color: #1E3250; line-height: 1.25; cursor: text; border-radius: 3px; transition: outline 0.15s; }
+        .gantt-task-name:hover { text-decoration: underline dotted #009EDB; }
+
+        .gantt-cells { display: grid; grid-template-columns: repeat(12, 1fr); position: relative; }
+        .gantt-cell { border-right: 1px solid #F1F5F9; min-height: 58px; position: relative; }
+        .gantt-cell.is-current-month { background: rgba(0,158,219,0.03); }
+
+        /* Bar */
+        .gantt-bar-container { position: absolute; top: 50%; transform: translateY(-50%); height: 26px; border-radius: 6px; overflow: hidden; cursor: pointer; transition: filter 0.2s, transform 0.2s, box-shadow 0.2s; z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+        .gantt-bar-container:hover { filter: brightness(1.08); transform: translateY(-50%) scaleY(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+        .gantt-bar-fill { position: absolute; top: 0; left: 0; height: 100%; transition: width 0.45s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+        .gantt-bar-pct { font-size: 0.58rem; font-weight: 900; color: white; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+
+        /* Status badges */
+        .status-badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 4px; font-size: 0.54rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; cursor: pointer; transition: all 0.15s; user-select: none; white-space: nowrap; border: 1px solid transparent; }
+        .status-badge:hover { filter: brightness(0.88); transform: scale(0.97); }
+        .status-planned { background: #F1F5F9; color: #64748B; border-color: #E2E8F0; }
+        .status-active  { background: #DBEAFE; color: #1D4ED8; border-color: #BFDBFE; }
+        .status-done    { background: #D1FAE5; color: #065F46; border-color: #A7F3D0; }
+        .status-blocked { background: #FEE2E2; color: #991B1B; border-color: #FECACA; }
+
+        /* Today line */
+        .today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #EC4899, #BE185D); z-index: 20; pointer-events: none; }
+        .today-line::before { content: 'Hoje'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); background: #EC4899; color: white; font-size: 0.54rem; font-weight: 900; padding: 2px 7px; border-radius: 10px; white-space: nowrap; letter-spacing: 0.06em; box-shadow: 0 2px 8px rgba(236,72,153,0.4); }
+        .today-line::after { content: '▼'; position: absolute; top: -4px; left: 50%; transform: translateX(-50%); color: #EC4899; font-size: 0.5rem; }
+
+        /* Progress popover */
+        .progress-popover { position: fixed; z-index: 200; background: white; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px; box-shadow: 0 25px 60px rgba(0,0,0,0.18); min-width: 250px; animation: fadeIn 0.15s ease; }
+        .progress-popover h4 { font-size: 0.72rem; font-weight: 800; color: #1E3250; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 10px; border-bottom: 1px solid #F1F5F9; }
+        .progress-slider { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 4px; background: #E5E7EB; outline: none; cursor: pointer; }
+        .progress-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #009EDB; cursor: pointer; box-shadow: 0 2px 6px rgba(0,158,219,0.4); transition: transform 0.15s; }
+        .progress-slider::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+        /* Summary cards */
+        .gantt-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+        .g-summary-card { background: white; border: 1px solid #E5E7EB; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 3px; transition: border-color 0.2s, box-shadow 0.2s; }
+        .g-summary-card:hover { border-color: #009EDB; box-shadow: 0 4px 16px rgba(0,158,219,0.1); }
+        .g-summary-card .s-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #94A3B8; }
+        .g-summary-card .s-value { font-size: 1.6rem; font-weight: 900; color: #1E3250; line-height: 1; }
+        .g-summary-card .s-sub { font-size: 0.62rem; color: #94A3B8; font-weight: 500; }
+
+        /* Legend */
+        .gantt-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #F1F5F9; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.62rem; font-weight: 600; color: #64748B; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+        .legend-hint { margin-left: auto; font-size: 0.58rem; color: #CBD5E1; display: flex; align-items: center; gap: 4px; }
+
+        @media (max-width: 640px) {
+            .gantt-summary { grid-template-columns: 1fr 1fr; }
+            .gantt-summary .g-summary-card:last-child { grid-column: span 2; }
+            .legend-hint { display: none; }
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -578,9 +658,36 @@
             </nav>
         </div>
 
-        <!-- TAB CONTENT: ROADMAP (Q1-Q4) -->
+        <!-- TAB CONTENT: ROADMAP GANTT -->
         <div id="roadmap" class="tab-content animate-fade-in">
-            <div class="roadmap-container">
+
+            <!-- Summary Cards -->
+            <div class="gantt-summary" id="gantt-summary"></div>
+
+            <!-- Gantt Chart -->
+            <div class="gantt-wrapper">
+                <div class="gantt-inner" id="gantt-inner">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="gantt-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#94A3B8"></div> Planejado</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#009EDB"></div> Em Andamento</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#059669"></div> Concluído</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#DC2626"></div> Bloqueado</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#EC4899"></div> Hoje</div>
+                <div class="legend-hint">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    Clique na barra para editar progresso · Clique no badge para mudar status · Duplo clique no nome para renomear
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PLACEHOLDER PARA O BLOCO ORIGINAL DAS FASES (removido, agora via JS) -->
+        <div style="display:none" id="roadmap-old-placeholder">
                 <!-- FASE 1: Q1 -->
                 <div class="roadmap-phase">
                     <div class="phase-badge">Q1</div>
@@ -675,9 +782,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- end roadmap-old-placeholder -->
 
         <!-- TAB CONTENT: COMPONENTES UI -->
+
         <div id="componentes" class="tab-content hidden space-y-8 animate-fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Cards -->
@@ -1001,6 +1109,361 @@
                 });
             });
         }
+
+        // ==========================================
+        // GANTT CHART ENGINE
+        // ==========================================
+
+        const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+        const CURRENT_MONTH = new Date().getMonth(); // 0-indexed
+        const STATUSES = ['planned','active','done','blocked'];
+        const STATUS_LABELS = { planned:'Planejado', active:'Em Andamento', done:'Concluído', blocked:'Bloqueado' };
+        const STATUS_CLASSES = { planned:'status-planned', active:'status-active', done:'status-done', blocked:'status-blocked' };
+        const STATUS_ICONS  = { planned:'○', active:'▶', done:'✓', blocked:'✕' };
+
+        const ganttData = [
+            {
+                phase: 'Fase 1: A Ponte (Fundação)', id: 'fase1',
+                phaseMonths: [0, 2], color: '#009EDB',
+                tasks: [
+                    { id:'t1', name:'Super Menu & Header',        tag:'CRÍTICO',        months:[0,1], progress:100, status:'done'    },
+                    { id:'t2', name:'Footer Institucional',        tag:'BRANDING',       months:[1,2], progress:100, status:'done'    },
+                    { id:'t3', name:'Mobile Navigation',           tag:'MOBILE',         months:[2,2], progress:80,  status:'active'  },
+                ]
+            },
+            {
+                phase: 'Fase 2: A Vitrine', id: 'fase2',
+                phaseMonths: [3, 5], color: '#297D6D',
+                tasks: [
+                    { id:'t4', name:'Hero Carrossel',              tag:'CONVERSÃO',      months:[3,4], progress:30,  status:'active'  },
+                    { id:'t5', name:'Seção de Impacto',            tag:'AUTORIDADE',     months:[4,5], progress:0,   status:'planned' },
+                ]
+            },
+            {
+                phase: 'Fase 3: Hub de Conteúdo & Plataformas', id: 'fase3',
+                phaseMonths: [6, 8], color: '#6E417A',
+                tasks: [
+                    { id:'t6', name:'Hubs Temáticos',              tag:'EXPLORABILIDADE',months:[6,7], progress:0,   status:'planned' },
+                    { id:'t7', name:'Plataformas de Ação',         tag:'COMPLEXIDADE',   months:[7,8], progress:0,   status:'planned' },
+                ]
+            },
+            {
+                phase: 'Fase 4: Ecossistema', id: 'fase4',
+                phaseMonths: [9, 11], color: '#D97706',
+                tasks: [
+                    { id:'t8', name:'Área do Participante',        tag:'RETENÇÃO',       months:[9,10],  progress:0, status:'planned' },
+                    { id:'t9', name:'Migração Total & Shutdown',   tag:'INFRA',          months:[10,11], progress:0, status:'planned' },
+                ]
+            }
+        ];
+
+        function loadGanttState() {
+            try {
+                const saved = localStorage.getItem('gantt_state_v2');
+                if (!saved) return;
+                const state = JSON.parse(saved);
+                ganttData.forEach(p => p.tasks.forEach(t => {
+                    if (state[t.id]) {
+                        t.progress = state[t.id].progress ?? t.progress;
+                        t.status   = state[t.id].status   ?? t.status;
+                        t.name     = state[t.id].name     ?? t.name;
+                    }
+                }));
+            } catch(e) { /* ignore */ }
+        }
+
+        function saveGanttState() {
+            const state = {};
+            ganttData.forEach(p => p.tasks.forEach(t => {
+                state[t.id] = { progress: t.progress, status: t.status, name: t.name };
+            }));
+            localStorage.setItem('gantt_state_v2', JSON.stringify(state));
+        }
+
+        function findTask(taskId) {
+            for (const p of ganttData) {
+                const t = p.tasks.find(x => x.id === taskId);
+                if (t) return t;
+            }
+            return null;
+        }
+
+        function getStatusColor(status) {
+            return { planned:'#94A3B8', active:'#009EDB', done:'#059669', blocked:'#DC2626' }[status] || '#94A3B8';
+        }
+
+        function getOverallProgress() {
+            let total = 0, count = 0;
+            ganttData.forEach(p => p.tasks.forEach(t => { total += t.progress; count++; }));
+            return count ? Math.round(total / count) : 0;
+        }
+
+        function getDoneCount() {
+            let done = 0;
+            ganttData.forEach(p => p.tasks.forEach(t => { if (t.status === 'done') done++; }));
+            return done;
+        }
+
+        function getTotalTasks() {
+            let count = 0;
+            ganttData.forEach(p => count += p.tasks.length);
+            return count;
+        }
+
+        function renderSummary() {
+            const el = document.getElementById('gantt-summary');
+            if (!el) return;
+            const overall = getOverallProgress();
+            const done    = getDoneCount();
+            const total   = getTotalTasks();
+            const remaining = Math.max(0, 12 - CURRENT_MONTH - 1);
+            el.innerHTML = `
+                <div class="g-summary-card">
+                    <div class="s-label">Progresso Geral</div>
+                    <div class="s-value" style="color:#009EDB">${overall}%</div>
+                    <div class="s-sub">${done} de ${total} entregas concluídas</div>
+                </div>
+                <div class="g-summary-card">
+                    <div class="s-label">Fases</div>
+                    <div class="s-value">${ganttData.length}</div>
+                    <div class="s-sub">Q1 → Q4 · 2026</div>
+                </div>
+                <div class="g-summary-card">
+                    <div class="s-label">Meses Restantes</div>
+                    <div class="s-value" style="color:#D97706">${remaining}</div>
+                    <div class="s-sub">Até Dezembro/2026</div>
+                </div>
+            `;
+        }
+
+        function renderGantt() {
+            loadGanttState();
+            renderSummary();
+
+            const container = document.getElementById('gantt-inner');
+            if (!container) return;
+
+            // Calculate today line position (fraction of year elapsed)
+            const now = new Date();
+            const dayFrac = (now.getDate() - 1) / new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const todayFrac = ((CURRENT_MONTH + dayFrac) / 12).toFixed(4);
+
+            let html = '';
+
+            // --- Month header ---
+            html += `<div class="gantt-month-header">
+                <div class="gantt-label-header">Fase / Entrega</div>
+                ${MONTHS.map((m, i) => `<div class="gantt-month-cell ${i === CURRENT_MONTH ? 'is-current' : ''}">${m}</div>`).join('')}
+            </div>`;
+
+            // --- Body ---
+            html += `<div class="gantt-body">`;
+
+            ganttData.forEach(phase => {
+                const [ps, pe] = phase.phaseMonths;
+                const phaseSpan = pe - ps + 1;
+
+                // Phase header row
+                html += `<div class="gantt-phase-row" style="background:${phase.color}18; border-left:3px solid ${phase.color};">
+                    <div class="gantt-phase-label" style="background:${phase.color};">${phase.phase}</div>
+                    <div class="gantt-phase-timeline">
+                        ${MONTHS.map((_, i) => {
+                            const inRange = i >= ps && i <= pe;
+                            return `<div class="gantt-phase-cell" style="${inRange ? `background:${phase.color}22; border-bottom:2px solid ${phase.color}55;` : ''}"></div>`;
+                        }).join('')}
+                    </div>
+                </div>`;
+
+                // Task rows
+                phase.tasks.forEach(task => {
+                    const [ts, te] = task.months;
+                    const taskSpan = te - ts + 1;
+                    const barColor = getStatusColor(task.status);
+                    const barLeft  = `calc(${ts} / 12 * 100% + 3px)`;
+                    const barWidth = `calc(${taskSpan} / 12 * 100% - 6px)`;
+
+                    html += `<div class="gantt-task-row">
+                        <div class="gantt-task-label">
+                            <div class="gantt-task-name"
+                                 id="name-${task.id}"
+                                 ondblclick="editTaskName('${task.id}', this)"
+                                 title="Duplo clique para renomear">${task.name}</div>
+                            <div style="display:flex;align-items:center;gap:5px;">
+                                <span style="font-size:0.52rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:${phase.color};">${task.tag}</span>
+                                <span class="status-badge ${STATUS_CLASSES[task.status]}"
+                                      id="badge-${task.id}"
+                                      onclick="cycleStatus('${task.id}')"
+                                      title="Clique para mudar status">${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}</span>
+                            </div>
+                        </div>
+                        <div class="gantt-cells">
+                            ${MONTHS.map((_, i) => `<div class="gantt-cell ${i === CURRENT_MONTH ? 'is-current-month' : ''}"></div>`).join('')}
+                            <div class="gantt-bar-container"
+                                 id="bar-${task.id}"
+                                 onclick="openProgressPopover('${task.id}', event)"
+                                 title="${task.name} — ${task.progress}% concluído. Clique para editar."
+                                 style="left:${barLeft};width:${barWidth};background:${barColor}28;">
+                                <div class="gantt-bar-fill" id="fill-${task.id}" style="width:${task.progress}%;background:${barColor};">
+                                    ${task.progress > 14 ? `<span class="gantt-bar-pct">${task.progress}%</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            });
+
+            // --- Today line ---
+            html += `<div class="today-line" style="left:calc(200px + ${todayFrac} * (100% - 200px));"></div>`;
+            html += `</div>`; // close gantt-body
+
+            container.innerHTML = html;
+        }
+
+        // --- Status cycling ---
+        function cycleStatus(taskId) {
+            const task = findTask(taskId);
+            if (!task) return;
+            task.status = STATUSES[(STATUSES.indexOf(task.status) + 1) % STATUSES.length];
+            saveGanttState();
+
+            const badge = document.getElementById(`badge-${taskId}`);
+            if (badge) {
+                badge.className = `status-badge ${STATUS_CLASSES[task.status]}`;
+                badge.textContent = `${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}`;
+            }
+            const bar  = document.getElementById(`bar-${taskId}`);
+            const fill = document.getElementById(`fill-${taskId}`);
+            const c = getStatusColor(task.status);
+            if (bar)  bar.style.background  = c + '28';
+            if (fill) fill.style.background = c;
+            renderSummary();
+        }
+
+        // --- Progress popover ---
+        let _activePopover = null;
+
+        function openProgressPopover(taskId, event) {
+            event.stopPropagation();
+            closeProgressPopover();
+            const task = findTask(taskId);
+            if (!task) return;
+
+            const pop = document.createElement('div');
+            pop.className = 'progress-popover';
+            pop.id = 'progress-popover';
+            pop.innerHTML = `
+                <h4>${task.name}</h4>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                    <span style="font-size:0.62rem;color:#94A3B8;font-weight:600;">0%</span>
+                    <input type="range" class="progress-slider" min="0" max="100" value="${task.progress}" id="slider-${taskId}" style="flex:1;">
+                    <span style="font-size:0.62rem;color:#94A3B8;font-weight:600;">100%</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span id="slider-display-${taskId}" style="font-size:1.3rem;font-weight:900;color:#009EDB;">${task.progress}%</span>
+                    <button onclick="applyProgress('${taskId}')"
+                            style="background:#009EDB;color:white;border:none;padding:7px 16px;border-radius:7px;
+                                   font-size:0.68rem;font-weight:800;cursor:pointer;text-transform:uppercase;
+                                   letter-spacing:0.06em;transition:background 0.15s;"
+                            onmouseover="this.style.background='#0080B8'" onmouseout="this.style.background='#009EDB'">
+                        Salvar
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(pop);
+            _activePopover = taskId;
+
+            // Position
+            const rect = event.currentTarget.getBoundingClientRect();
+            let top  = rect.bottom + 10;
+            let left = rect.left;
+            if (left + 270 > window.innerWidth)  left = window.innerWidth - 278;
+            if (top  + 150 > window.innerHeight)  top  = rect.top - 158;
+            pop.style.top  = top  + 'px';
+            pop.style.left = left + 'px';
+
+            // Live preview
+            document.getElementById(`slider-${taskId}`).addEventListener('input', e => {
+                const val = parseInt(e.target.value);
+                document.getElementById(`slider-display-${taskId}`).textContent = val + '%';
+                const fill = document.getElementById(`fill-${taskId}`);
+                if (fill) {
+                    fill.style.width = val + '%';
+                    fill.innerHTML = val > 14 ? `<span class="gantt-bar-pct">${val}%</span>` : '';
+                }
+            });
+        }
+
+        function applyProgress(taskId) {
+            const slider = document.getElementById(`slider-${taskId}`);
+            if (!slider) return;
+            const val  = parseInt(slider.value);
+            const task = findTask(taskId);
+            if (!task) return;
+            task.progress = val;
+
+            // Auto-status
+            if (val === 100 && task.status !== 'blocked') task.status = 'done';
+            else if (val > 0  && task.status === 'planned') task.status = 'active';
+            else if (val === 0 && task.status === 'done')   task.status = 'planned';
+
+            saveGanttState();
+            closeProgressPopover();
+
+            const badge = document.getElementById(`badge-${taskId}`);
+            const bar   = document.getElementById(`bar-${taskId}`);
+            const fill  = document.getElementById(`fill-${taskId}`);
+            const c = getStatusColor(task.status);
+
+            if (badge) { badge.className = `status-badge ${STATUS_CLASSES[task.status]}`; badge.textContent = `${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}`; }
+            if (bar)   bar.style.background  = c + '28';
+            if (fill)  { fill.style.background = c; fill.style.width = val + '%'; fill.innerHTML = val > 14 ? `<span class="gantt-bar-pct">${val}%</span>` : ''; }
+            renderSummary();
+        }
+
+        function closeProgressPopover() {
+            const el = document.getElementById('progress-popover');
+            if (el) el.remove();
+            _activePopover = null;
+        }
+
+        // --- Inline name editing ---
+        function editTaskName(taskId, el) {
+            const task = findTask(taskId);
+            if (!task) return;
+            el.contentEditable = 'true';
+            el.focus();
+            el.style.outline = '2px solid #009EDB';
+            el.style.borderRadius = '3px';
+            el.style.padding = '1px 4px';
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+
+            el.onblur = () => {
+                el.contentEditable = 'false';
+                el.style.outline = el.style.padding = '';
+                const newName = el.textContent.trim();
+                if (newName) { task.name = newName; saveGanttState(); }
+                else el.textContent = task.name;
+            };
+            el.onkeydown = e => {
+                if (e.key === 'Enter')  { e.preventDefault(); el.blur(); }
+                if (e.key === 'Escape') { el.textContent = task.name; el.blur(); }
+            };
+        }
+
+        // Close popover on outside click
+        document.addEventListener('click', e => {
+            if (_activePopover && !e.target.closest('#progress-popover') && !e.target.closest('.gantt-bar-container')) {
+                closeProgressPopover();
+            }
+        });
+
+        // Initialize
+        renderGantt();
+
     </script>
 </body>
 </html>
