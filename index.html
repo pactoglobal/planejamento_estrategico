@@ -593,6 +593,228 @@
         </div>
     </template>
 
+    
+    <!-- NOVO: Container -->
+    <template id="tpl-container">
+        <div class="w-full h-full min-h-[50vh] flex flex-col items-center justify-center p-8 bg-gray-100">
+            <div class="w-full max-w-7xl border-4 border-dashed border-[#009EDB]/50 bg-white shadow-xl rounded-2xl p-12 relative flex items-center justify-center min-h-[300px]">
+                <span class="absolute top-4 left-4 bg-[#009EDB] text-white px-3 py-1 rounded-full text-xs font-bold font-mono">max-w-7xl (default)</span>
+                <p class="text-4xl font-black text-gray-300 uppercase tracking-widest">&lt;Container /&gt;</p>
+            </div>
+            <div class="w-full max-w-4xl border-4 border-dashed border-[#CCB146]/50 bg-white/50 shadow-md rounded-2xl p-6 relative flex items-center justify-center mt-8">
+                <span class="absolute top-4 left-4 bg-[#CCB146] text-white px-3 py-1 rounded-full text-xs font-bold font-mono">max-w-4xl (small)</span>
+                <p class="text-xl font-bold text-gray-400 uppercase">&lt;Container size="small" /&gt;</p>
+            </div>
+        </div>
+    </template>
+
+    <!-- NOVO: EventsListSection -->
+    <template id="tpl-events">
+        <div class="w-full py-16 px-4 md:px-8 max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-8 border-b-2 border-gray-200 pb-4">
+                <div>
+                     <span class="text-[#CCB146] font-bold text-[10px] uppercase tracking-widest">Nossa Agenda</span>
+                     <h2 class="text-3xl font-black text-[#1E3250] uppercase mt-1">Próximos Eventos</h2>
+                </div>
+                <div class="flex gap-4">
+                     <button class="text-[#CCB146] border-b-2 border-[#CCB146] pb-1 font-bold text-xs uppercase tracking-wider">Vem Aí</button>
+                     <button class="text-gray-400 pb-1 font-bold text-xs uppercase tracking-wider hover:text-[#1E3250]">Anteriores</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card Mock -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden group cursor-pointer hover:-translate-y-2 transition">
+                    <div class="h-40 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-[#009EDB] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-widest">Temático</span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-[10px] font-bold text-gray-400 mb-2 font-mono">15 AGO 2026 • SÃO PAULO</p>
+                        <h4 class="font-bold text-[#1E3250] text-sm leading-tight mb-3 group-hover:text-[#009EDB] transition">Fórum de Liderança Ancestral</h4>
+                        <div class="flex gap-2">
+                             <div class="w-6 h-6 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center text-[8px] font-bold">ODS</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Mock 2 -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden group cursor-pointer hover:-translate-y-2 transition">
+                    <div class="h-40 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-[#CCB146] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-widest">Institucional</span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-[10px] font-bold text-gray-400 mb-2 font-mono">10 SET 2026 • RIO DE JANEIRO</p>
+                        <h4 class="font-bold text-[#1E3250] text-sm leading-tight mb-3 group-hover:text-[#CCB146] transition">Encontro Anual Pacto Global</h4>
+                        <div class="flex gap-2">
+                             <div class="w-6 h-6 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center text-[8px] font-bold">ALL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- NOVO: NewsSection -->
+    <template id="tpl-news">
+        <div class="w-full bg-[#1E3250] py-16 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 mb-8 flex justify-between items-end">
+                <div><h2 class="text-3xl font-black text-white uppercase">Últimas Notícias</h2></div>
+                <button class="text-white border border-white/20 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-[#1E3250]">Ver Todas</button>
+            </div>
+            <div class="flex gap-4 px-4 md:px-8 overflow-x-auto pb-8 snap-x">
+                <div class="min-w-[300px] w-[300px] h-[400px] bg-white rounded-xl relative overflow-hidden group snap-start cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=500&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#162840] via-[#162840]/40 to-transparent"></div>
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="text-[10px] text-[#CCB146] font-bold uppercase tracking-widest mb-2 block">Destaque • 3 min ler</span>
+                        <h3 class="text-white font-bold text-lg leading-tight group-hover:text-[#CCB146] transition">Pacto Global lança novo guia de integridade para PMEs</h3>
+                    </div>
+                </div>
+                <div class="min-w-[300px] w-[300px] h-[400px] bg-white rounded-xl relative overflow-hidden group snap-start cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#162840] via-[#162840]/40 to-transparent"></div>
+                    <div class="absolute inset-x-0 bottom-0 p-6">
+                        <span class="text-[10px] text-[#297D6D] font-bold uppercase tracking-widest mb-2 block">Sustentabilidade • 5 min ler</span>
+                        <h3 class="text-white font-bold text-lg leading-tight group-hover:text-[#297D6D] transition">Ambição 2030 atinge marco de 500 empresas comprometidas</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- NOVO: Primitives (Button, Badge, etc) -->
+    <template id="tpl-button">
+        <div class="w-full min-h-[50vh] flex items-center justify-center p-8 bg-white">
+            <div class="flex flex-col gap-6 w-full max-w-sm">
+                <button class="w-full bg-[#297D6D] text-white hover:bg-[#1E5C4F] px-6 py-3.5 rounded-full font-bold uppercase tracking-wider text-sm shadow-xl focus:ring-4 focus:ring-[#CCB146] outline-none transition">Primary Variant</button>
+                <button class="w-full bg-[#009EDB] text-white hover:bg-[#007ba8] px-6 py-3.5 rounded-full font-bold uppercase tracking-wider text-sm shadow-xl focus:ring-4 focus:ring-[#CCB146] outline-none transition">Secondary Variant</button>
+                <button class="w-full border-2 border-[#1E3250] text-[#1E3250] hover:bg-[#1E3250] hover:text-white px-6 py-3.5 rounded-full font-bold uppercase tracking-wider text-sm focus:ring-4 focus:ring-[#CCB146] outline-none transition">Outline Variant</button>
+                <button class="w-full bg-transparent text-[#1E3250] hover:bg-gray-100 px-6 py-3.5 rounded-full font-bold uppercase tracking-wider text-sm outline-none transition flex items-center justify-center gap-2">Ghost Variant <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-badge">
+        <div class="w-full min-h-[50vh] flex items-center justify-center p-8 bg-gray-50">
+            <div class="flex gap-4 flex-wrap justify-center">
+                <span class="bg-[#1E3250] text-white text-[10px] font-black uppercase tracking-[0.15em] px-3 py-1 rounded">Neutral Badge</span>
+                <span class="bg-[#CCB146] text-[#1E3250] text-[10px] font-black uppercase tracking-[0.15em] px-3 py-1 rounded">Highlight Badge</span>
+                <span class="bg-[#297D6D] text-white text-[10px] font-black uppercase tracking-[0.15em] px-3 py-1 rounded">Success Badge</span>
+                <span class="bg-[#EC3740] text-white text-[10px] font-black uppercase tracking-[0.15em] px-3 py-1 rounded">Alert Badge</span>
+            </div>
+        </div>
+    </template>
+    
+    <template id="tpl-sectionheader">
+        <div class="w-full min-h-[50vh] flex flex-col items-center justify-center p-8 bg-white max-w-4xl mx-auto gap-12">
+            <div class="w-full border-l-4 border-[#009EDB] pl-6 py-2">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-1">Badge Opcional</span>
+                <h2 class="text-4xl font-black text-[#1E3250] uppercase">Título da <span class="text-[#009EDB]">Seção</span></h2>
+                <p class="text-gray-500 mt-2 max-w-2xl">Descrição opcional que acompanha o cabeçalho. O SectionHeader padroniza o estilo de entrada de todo bloco na v4.</p>
+            </div>
+             <div class="w-full bg-[#1E3250] p-12 rounded-2xl">
+                <div class="border-l-4 border-[#CCB146] pl-6 py-2">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#CCB146] block mb-1">Inverted Mode</span>
+                    <h2 class="text-4xl font-black text-white uppercase">Header <span class="text-[#CCB146]">Dark</span></h2>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-tile">
+         <div class="w-full min-h-[50vh] flex items-center justify-center p-8 bg-gray-100">
+             <div class="w-64 h-64 relative overflow-hidden bg-[#1E3250] rounded-2xl cursor-pointer shadow-xl group">
+                 <img src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=500&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                 <div class="absolute inset-0 bg-gradient-to-t from-[#1E3250] via-[#1E3250]/20 to-transparent"></div>
+                 <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                    <span class="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 flex items-center gap-2 text-white"><span class="w-2 h-2 rounded-sm bg-[#CCB146]"></span>Bento Tile</span>
+                    <h3 class="font-black text-white text-2xl uppercase leading-tight">Card Base</h3>
+                 </div>
+             </div>
+         </div>
+    </template>
+
+    <template id="tpl-eventcard">
+        <div class="w-full min-h-[50vh] flex items-center justify-center p-8 bg-gray-100">
+            <div class="w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform duration-300">
+                <div class="h-48 bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <span class="absolute top-3 left-3 bg-[#1E3250] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Presencial</span>
+                    <span class="absolute top-3 right-3 bg-[#EC3740] text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md">Esgotado</span>
+                </div>
+                <div class="p-6">
+                    <p class="text-[10px] font-bold text-gray-400 mb-2 font-mono">15 AGO 2026 • SÃO PAULO</p>
+                    <h4 class="font-bold text-[#1E3250] text-lg leading-tight mb-3 group-hover:text-[#009EDB] transition">Fórum Liderança Ancestral</h4>
+                    <p class="text-xs text-gray-500 line-clamp-2">Um evento focado em como práticas ancestrais podem guiar novos modelos de gestão.</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-pagehero">
+        <div class="w-full bg-white flex flex-col items-center">
+            <div class="relative w-full h-[40vh] bg-[#1E3250] overflow-hidden flex items-center justify-center">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0B1220] to-transparent"></div>
+                <div class="relative z-10 text-center px-4">
+                    <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-md text-[#CCB146] border border-[#CCB146]/30 text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg mb-4">Categoria Page Hero</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight mb-4 drop-shadow-lg">Título da <span class="text-[#CCB146]">Página</span> Interna</h1>
+                    <p class="text-white/70 max-w-lg mx-auto text-sm md:text-base">Breadcrumb ou descrição curta opcional logo abaixo do título em páginas internas da v4.</p>
+                </div>
+            </div>
+            <div class="h-32 bg-gray-50 w-full"></div>
+        </div>
+    </template>
+
+    <template id="tpl-logos">
+        <div class="w-full min-h-[30vh] flex items-center justify-center p-8 bg-[#0B1220]">
+             <div class="flex flex-col items-center">
+                <span class="text-[10px] text-white/40 uppercase tracking-[0.2em] mb-6 font-bold text-center block w-full border-b border-white/10 pb-2">Apoiadores Institucionais — Extratos</span>
+                <div class="flex items-center gap-8 md:gap-12 opacity-80 filter grayscale hover:grayscale-0 transition-all duration-500">
+                    <div class="text-white font-serif font-bold italic text-2xl">aegea</div>
+                    <div class="text-white font-black text-3xl tracking-tighter"><span class="text-[#297D6D]">M</span>RV</div>
+                    <div class="text-white font-sans font-bold text-sm uppercase leading-tight"><span class="text-[#297D6D]">Schneider</span><br/>Electric</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-page-generic">
+        <div class="w-full min-h-[50vh] flex items-center justify-center p-8 bg-[#162840]">
+             <div class="text-center space-y-4">
+                 <div class="w-16 h-16 bg-[#1E3250] rounded-2xl border border-white/10 mx-auto flex items-center justify-center">
+                     <i data-lucide="layers" class="w-8 h-8 text-[#009EDB]"></i>
+                 </div>
+                 <h2 class="text-2xl font-black text-white uppercase">Page Route</h2>
+                 <p class="text-white/50 text-sm max-w-md mx-auto">
+                     Páginas representam a orquestração de Sections. <br/>Para visualizar o layout, teste as visualizações individuais dos blocos (<span class="text-[#CCB146] font-mono font-bold text-xs">&lt;PageHero /&gt;</span>, <span class="text-[#009EDB] font-mono font-bold text-xs">&lt;NewsSection /&gt;</span>).
+                 </p>
+             </div>
+        </div>
+    </template>
+
+    <template id="tpl-code">
+        <div class="w-full h-full min-h-[50vh] bg-[#0d1624] p-8 font-mono text-xs overflow-auto text-[#AECFE6]">
+<pre><code><span class="text-pink-500">import</span> { useState, useEffect } <span class="text-pink-500">from</span> <span class="text-green-400">'react'</span>;
+
+<span class="text-gray-500">// Módulo Puramente Lógico.</span>
+<span class="text-gray-500">// O visualizador não renderiza UI para este item.</span>
+
+<span class="text-pink-500">export const</span> <span class="text-blue-400">HASH_TO_ROUTE</span> = {
+  <span class="text-green-400">'#/'</span>:               <span class="text-green-400">'home'</span>,
+  <span class="text-green-400">'#/home'</span>:           <span class="text-green-400">'home'</span>,
+  <span class="text-green-400">'#/sobre'</span>:          <span class="text-green-400">'sobre'</span>,
+  <span class="text-green-400">'#/eventos'</span>:        <span class="text-green-400">'eventos'</span>,
+  <span class="text-green-400">'#/noticias'</span>:       <span class="text-green-400">'noticias'</span>,
+  <span class="text-green-400">'#/agenda'</span>:         <span class="text-green-400">'agenda'</span>,
+  <span class="text-green-400">'#/programas'</span>:      <span class="text-green-400">'programas'</span>,
+  <span class="text-green-400">'#/conhecimento'</span>:   <span class="text-green-400">'conhecimento'</span>,
+  <span class="text-green-400">'#/participar'</span>:     <span class="text-green-400">'participar'</span>,
+  <span class="text-green-400">'#/cop'</span>:            <span class="text-green-400">'cop'</span>
+};</code></pre>
+        </div>
+    </template>
+
     <!-- ========================================== -->
     <!-- FIM TEMPLATES                              -->
     <!-- ========================================== -->
@@ -945,15 +1167,15 @@
                     <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">3 arquivos</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="component-card group">
+                    <div class="component-card group" onclick="openModal('tpl-code')">
                         <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="anchor" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">useHashRoute()</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">30 ln</span></div>
                         <div class="component-body"><p class="text-[10px] text-white/50">Custom hook que escuta hashchange. Converte hash → routeKey via HASH_TO_ROUTE map. Expõe { currentRoute, navigate }.</p><span class="text-[8px] text-white/25 font-mono">hooks/useHashRoute.js</span></div>
                     </div>
-                    <div class="component-card group">
+                    <div class="component-card group" onclick="openModal('tpl-code')">
                         <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="database" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">constants.js</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">323 ln</span></div>
                         <div class="component-body"><p class="text-[10px] text-white/50">ROUTES, MOCK_EVENTS, PILLARS_DATA (4 pilares + 10 princípios), ODS_COLORS (18), HERO_SLIDES, MENU_DESTAQUES/EXPLORAR/PARTICIPAR, HEADER_PROGRAMAS/CONHECIMENTO, INSTITUTIONAL_STATS.</p><span class="text-[8px] text-white/25 font-mono">data/constants.js</span></div>
                     </div>
-                    <div class="component-card group">
+                    <div class="component-card group" onclick="openModal('tpl-code')">
                         <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="wrench" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">cn()</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">util</span></div>
                         <div class="component-body"><p class="text-[10px] text-white/50">Utility de merge de classes CSS (clsx/twMerge pattern). Usado em todos os componentes para conditional classNames.</p><span class="text-[8px] text-white/25 font-mono">utils/cn.js</span></div>
                     </div>
