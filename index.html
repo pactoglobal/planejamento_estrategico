@@ -184,6 +184,9 @@
             .legend-hint { display: none; }
         }
     </style>
+    <!-- Bibliotecas Exportação Gantt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -641,7 +644,7 @@
         <div class="sticky-tabs mb-8 overflow-x-auto">
             <nav class="flex space-x-6 md:space-x-8 min-w-max px-2 md:px-0">
                 <button class="tab-btn active text-sm flex items-center gap-2" data-tab="roadmap">
-                    <i data-lucide="map" class="w-4 h-4"></i>Roadmap
+                    <i data-lucide="map" class="w-4 h-4"></i>Roadmap MKT
                 </button>
                 <button class="tab-btn text-sm flex items-center gap-2" data-tab="componentes">
                     <i data-lucide="component" class="w-4 h-4"></i>Componentes UI
@@ -659,10 +662,20 @@
         </div>
 
         <!-- TAB CONTENT: ROADMAP GANTT -->
-        <div id="roadmap" class="tab-content animate-fade-in">
+        <div id="roadmap" class="tab-content animate-fade-in p-4 rounded-xl" style="background:white;">
 
-            <!-- Summary Cards -->
-            <div class="gantt-summary" id="gantt-summary"></div>
+            <!-- Top Actions -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-4" id="gantt-actions-header">
+                <div class="gantt-summary w-full sm:w-auto" id="gantt-summary" style="margin-bottom:0; flex-grow:1;"></div>
+                <div class="flex gap-2">
+                    <button onclick="downloadGantt('png')" class="flex items-center gap-2 bg-white border border-gray-200 text-[#1E3250] px-3 py-2 rounded-lg text-xs font-bold hover:bg-gray-50 transition shadow-sm h-full whitespace-nowrap">
+                        <i data-lucide="image" class="w-4 h-4 text-[#009EDB]"></i> Baixar PNG
+                    </button>
+                    <button onclick="downloadGantt('pdf')" class="flex items-center gap-2 bg-[#009EDB] text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-600 transition shadow-sm h-full whitespace-nowrap">
+                        <i data-lucide="file-down" class="w-4 h-4"></i> Baixar PDF
+                    </button>
+                </div>
+            </div>
 
             <!-- Gantt Chart -->
             <div class="gantt-wrapper">
@@ -1123,43 +1136,46 @@
 
         const ganttData = [
             {
-                phase: 'Fase 1: A Ponte (Fundação)', id: 'fase1',
-                phaseMonths: [0, 2], color: '#009EDB',
+                phase: 'Nova versão do site', id: 'fase1',
+                phaseMonths: [0, 11], color: '#E81C60',
                 tasks: [
-                    { id:'t1', name:'Super Menu & Header',        tag:'CRÍTICO',        months:[0,1], progress:100, status:'done'    },
-                    { id:'t2', name:'Footer Institucional',        tag:'BRANDING',       months:[1,2], progress:100, status:'done'    },
-                    { id:'t3', name:'Mobile Navigation',           tag:'MOBILE',         months:[2,2], progress:80,  status:'active'  },
+                    { id:'t1', name:'Nova Página de Adesão',        tag:'SITE', months:[0,0], progress:0, status:'planned' },
+                    { id:'t2', name:'Nova Home',                    tag:'SITE', months:[1,1], progress:0, status:'planned' },
+                    { id:'t3', name:'Menu Pacto Global',            tag:'SITE', months:[3,3], progress:0, status:'planned' },
+                    { id:'t4', name:'Nova Página de Eventos',       tag:'SITE', months:[4,4], progress:0, status:'planned' },
+                    { id:'t5', name:'Novas Páginas para os 4 Pilares',tag:'SITE',months:[5,5],progress:0, status:'planned' },
+                    { id:'t6', name:'Novas Páginas das plataformas',tag:'SITE', months:[6,6], progress:0, status:'planned' },
+                    { id:'t7', name:'Novas Páginas Conhecimento',   tag:'SITE', months:[7,7], progress:0, status:'planned' },
+                    { id:'t8', name:'Novas Páginas Programas',      tag:'SITE', months:[8,8], progress:0, status:'planned' },
+                    { id:'t9', name:'Novas Páginas dos Hubs ODS',   tag:'SITE', months:[9,9], progress:0, status:'planned' },
+                    { id:'t10',name:'Novas Páginas de Notícia...',  tag:'SITE', months:[10,10], progress:0, status:'planned'},
+                    { id:'t11',name:'Novo Menu, Footer e Header',   tag:'SITE', months:[11,11], progress:0, status:'planned'}
                 ]
             },
             {
-                phase: 'Fase 2: A Vitrine', id: 'fase2',
-                phaseMonths: [3, 5], color: '#297D6D',
+                phase: 'Produção dos materiais Institucionais', id: 'fase2',
+                phaseMonths: [0, 11], color: '#E81C60', 
                 tasks: [
-                    { id:'t4', name:'Hero Carrossel',              tag:'CONVERSÃO',      months:[3,4], progress:30,  status:'active'  },
-                    { id:'t5', name:'Seção de Impacto',            tag:'AUTORIDADE',     months:[4,5], progress:0,   status:'planned' },
+                    { id:'m1', name:'Lorem ipsum dolor sit amet...', tag:'CONTEÚDO', months:[3,4], progress:0, status:'planned' },
+                    { id:'m2', name:'Morbi porta ipsum erat...',     tag:'CONTEÚDO', months:[5,6], progress:0, status:'planned' },
+                    { id:'m3', name:'Lorem ipsum dolor sit amet...', tag:'CONTEÚDO', months:[7,8], progress:0, status:'planned' },
+                    { id:'m4', name:'Morbi porta ipsum erat...',     tag:'CONTEÚDO', months:[9,10], progress:0, status:'planned' }
                 ]
             },
             {
-                phase: 'Fase 3: Hub de Conteúdo & Plataformas', id: 'fase3',
-                phaseMonths: [6, 8], color: '#6E417A',
+                phase: 'Reorganização da frente de geração...', id: 'fase3',
+                phaseMonths: [0, 6], color: '#E81C60',
                 tasks: [
-                    { id:'t6', name:'Hubs Temáticos',              tag:'EXPLORABILIDADE',months:[6,7], progress:0,   status:'planned' },
-                    { id:'t7', name:'Plataformas de Ação',         tag:'COMPLEXIDADE',   months:[7,8], progress:0,   status:'planned' },
-                ]
-            },
-            {
-                phase: 'Fase 4: Ecossistema', id: 'fase4',
-                phaseMonths: [9, 11], color: '#D97706',
-                tasks: [
-                    { id:'t8', name:'Área do Participante',        tag:'RETENÇÃO',       months:[9,10],  progress:0, status:'planned' },
-                    { id:'t9', name:'Migração Total & Shutdown',   tag:'INFRA',          months:[10,11], progress:0, status:'planned' },
+                    { id:'l1', name:'Lorem ipsum dolor sit amet...', tag:'LEADS', months:[1,1], progress:0, status:'planned' },
+                    { id:'l2', name:'Morbi porta ipsum erat...',     tag:'LEADS', months:[2,3], progress:0, status:'planned' },
+                    { id:'l3', name:'Lorem ipsum dolor sit amet...', tag:'LEADS', months:[4,5], progress:0, status:'planned' }
                 ]
             }
         ];
 
         function loadGanttState() {
             try {
-                const saved = localStorage.getItem('gantt_state_v2');
+                const saved = localStorage.getItem('gantt_state_mkt_v1');
                 if (!saved) return;
                 const state = JSON.parse(saved);
                 ganttData.forEach(p => p.tasks.forEach(t => {
@@ -1177,7 +1193,7 @@
             ganttData.forEach(p => p.tasks.forEach(t => {
                 state[t.id] = { progress: t.progress, status: t.status, name: t.name };
             }));
-            localStorage.setItem('gantt_state_v2', JSON.stringify(state));
+            localStorage.setItem('gantt_state_mkt_v1', JSON.stringify(state));
         }
 
         function findTask(taskId) {
@@ -1463,6 +1479,54 @@
 
         // Initialize
         renderGantt();
+
+        // --- Exportação Print-Ready ---
+        async function downloadGantt(type) {
+            const wrapper = document.getElementById('roadmap');
+            if(!wrapper) return;
+            
+            // UI Tweaks pre-render
+            const actionsBlock = document.getElementById('gantt-actions-header');
+            const hints = document.querySelector('.legend-hint');
+            if(actionsBlock) actionsBlock.style.display = 'none';
+            if(hints) hints.style.display = 'none';
+            
+            // Temporary add a title header inside the block for the picture
+            const printTitle = document.createElement('div');
+            printTitle.innerHTML = `<h2 style="font-size:1.5rem;font-weight:900;color:#1E3250;margin-bottom:20px;padding:10px 0;">CRONOGRAMA: MKT, COMUNICAÇÃO E EVENTOS</h2>`;
+            wrapper.prepend(printTitle);
+
+            // Aguarda render
+            await new Promise(r => setTimeout(r, 100));
+            
+            try {
+                const canvas = await html2canvas(wrapper, { scale: 2, backgroundColor: '#FFFFFF' });
+                const imgData = canvas.toDataURL('image/png');
+                
+                if (type === 'png') {
+                    const link = document.createElement('a');
+                    link.download = 'Roadmap_MKT_2026.png';
+                    link.href = imgData;
+                    link.click();
+                } else if (type === 'pdf') {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({ orientation: 'landscape', format: 'a4' });
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    let pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save('Roadmap_MKT_2026.pdf');
+                }
+            } catch (err) {
+                console.error("Erro na exportação:", err);
+                alert("Houve um erro ao tentar gerar o arquivo.");
+            } finally {
+                // Return UI
+                printTitle.remove();
+                if(actionsBlock) actionsBlock.style.display = '';
+                if(hints) hints.style.display = '';
+            }
+        }
 
     </script>
 </body>
