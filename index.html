@@ -818,74 +818,145 @@
 
         <!-- TAB CONTENT: COMPONENTES UI -->
 
-        <div id="componentes" class="tab-content hidden space-y-8 animate-fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cards -->
-                <div class="component-card group" onclick="openModal('tpl-header')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="box" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <h4 class="font-bold text-white/90 text-sm">&lt;CapsuleHeader /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">layout/CapsuleHeader.jsx</span>
-                    </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">NavBar flutuante responsivo, clean com glassmorphism.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
-                </div>
+        <div id="componentes" class="tab-content hidden space-y-10 animate-fade-in">
 
-                <div class="component-card group" onclick="openModal('tpl-menu')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="sidebar" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <h4 class="font-bold text-white/90 text-sm">&lt;SuperMenu /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">layout/SuperMenu.jsx</span>
-                    </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">Overlay fullscreen stateful com busca integrada.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
+            <!-- LAYER 1: LAYOUT (Global, Always Rendered) -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-2 h-8 bg-[#CCB146] rounded-full"></span>
+                    <h3 class="text-sm font-bold text-[#CCB146] uppercase tracking-[0.2em]">Layout — Sempre Renderizado</h3>
+                    <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">4 arquivos</span>
                 </div>
-
-                <div class="component-card group" onclick="openModal('tpl-hero')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="image" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <h4 class="font-bold text-white/90 text-sm">&lt;HeroCarousel /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">sections/HeroCarousel.jsx</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="component-card group" onclick="openModal('tpl-header')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="box" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;CapsuleHeader /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">126 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Header flutuante sticky com glassmorphism. Pílula central com dropdowns (Programas, Conhecimento), links diretos (Sobre, Eventos, Notícias). Integra &lt;SuperMenu /&gt; e CTA "Quero Aderir".</p><span class="text-[9px] text-white/30 font-mono">layout/CapsuleHeader.jsx</span></div>
                     </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">Slider curvo, text-center, auto-play via framer-motion.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
+                    <div class="component-card group" onclick="openModal('tpl-menu')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="sidebar" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;SuperMenu /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">134 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Overlay fullscreen z-100 com 3 colunas (Destaques, Explorar, Participar). Busca integrada, subItems expansíveis, rodapé com &lt;SupporterLogos /&gt; e redes sociais. Controla body overflow.</p><span class="text-[9px] text-white/30 font-mono">layout/SuperMenu.jsx</span></div>
+                    </div>
+                    <div class="component-card group" onclick="openModal('tpl-footer')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="layout-template" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;Footer /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">87 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Grid 4 colunas: Logo + Redes Sociais (LinkedIn, Instagram, YouTube, X), Links Úteis, Oportunidades/Políticas, Sala de Imprensa. Copyright bar inferior.</p><span class="text-[9px] text-white/30 font-mono">layout/Footer.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="maximize" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;Container /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">18 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Wrapper responsivo. Tamanhos configuráveis: default (max-w-7xl), small (4xl), large (1440px), full.</p><span class="text-[9px] text-white/30 font-mono">layout/Container.jsx</span></div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="component-card group" onclick="openModal('tpl-bento')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="layout-grid" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <!-- Agregando os 2 componentes baseados em Grid -->
-                            <h4 class="font-bold text-white/90 text-sm">&lt;PillaresSection /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">sections/PillaresSection.jsx</span>
-                    </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">Grid assimétrico unificando eixos, movimentos e &lt;NewsSection /&gt;.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
+            <!-- LAYER 2: SECTIONS (Feature Sections for Home) -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-2 h-8 bg-[#009EDB] rounded-full"></span>
+                    <h3 class="text-sm font-bold text-[#009EDB] uppercase tracking-[0.2em]">Sections — Blocos de Conteúdo</h3>
+                    <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">5 arquivos</span>
                 </div>
-
-                <div class="component-card group" onclick="openModal('tpl-impact')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="bar-chart-2" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <h4 class="font-bold text-white/90 text-sm">&lt;ImpactSection /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">sections/ImpactSection.jsx</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="component-card group" onclick="openModal('tpl-hero')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="image" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;HeroCarousel /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">77 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Slider fullscreen (85vh) com 3 slides, auto-play 5s, transição cubic-bezier. Gradiente dark, textura carbon fiber, CTAs com &lt;Badge /&gt; e &lt;Button /&gt;. Progress dots estilo Red Bull.</p><span class="text-[9px] text-white/30 font-mono">sections/HeroCarousel.jsx</span></div>
                     </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">Visualização global interativa (167 países) com contadores em SVG.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
+                    <div class="component-card group" onclick="openModal('tpl-impact')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="bar-chart-2" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;ImpactSection /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">74 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Dark section com mapa pontilhado SVG (pattern grid). 5 KPIs: 22.485 Empresas, 167 Países, 3.024 Não Empresariais, 62 Redes Locais, 25.509 Participantes. Hover micro-animations.</p><span class="text-[9px] text-white/30 font-mono">sections/ImpactSection.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="calendar" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;EventsListSection /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">63 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Seção de Eventos com tabs (Vem aí / Anteriores), grid 4 colunas de &lt;EventCard /&gt;, dados via MOCK_EVENTS. &lt;SectionHeader /&gt; com badge "Agenda 2026".</p><span class="text-[9px] text-white/30 font-mono">sections/EventsListSection.jsx</span></div>
+                    </div>
+                    <div class="component-card group" onclick="openModal('tpl-bento')">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="layout-grid" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;PillaresSection /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">149 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Bento Box "10 Princípios Universais" com 2x2 grid interativo. 4 pilares (Direitos Humanos, Trabalho, Meio Ambiente, Anticorrupção), infobox expandível com princípios e ODS relacionados.</p><span class="text-[9px] text-white/30 font-mono">sections/PillaresSection.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="newspaper" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;NewsSection /&gt;</h4></div><span class="comp-status status-ready text-[9px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-0.5 rounded">132 linhas</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Carousel horizontal com scroll snap. 5 news cards com imagem cover, hover scale 110%, gradiente reveal, metadata (categoria + tempo de leitura). CTA "Ver Todas as Notícias".</p><span class="text-[9px] text-white/30 font-mono">sections/NewsSection.jsx</span></div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="component-card group" onclick="openModal('tpl-footer')">
-                    <div class="component-header">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="layout-template" class="w-5 h-5 text-[#009EDB] group-hover:text-[#0f2942]"></i></div>
-                            <h4 class="font-bold text-white/90 text-sm">&lt;Footer /&gt;</h4>
-                        </div>
-                        <span class="comp-status status-ready text-[10px] font-bold text-[#297D6D] bg-[#297D6D]/10 border border-[#297D6D]/30 px-2 py-1 rounded">layout/Footer.jsx</span>
+            <!-- LAYER 3: UI PRIMITIVES (Design System Atoms) -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-2 h-8 bg-[#297D6D] rounded-full"></span>
+                    <h3 class="text-sm font-bold text-[#297D6D] uppercase tracking-[0.2em]">UI Primitives — Design System Atoms</h3>
+                    <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">7 arquivos</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="mouse-pointer-click" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;Button /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">22 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">5 variants: primary (green), secondary (blue), outline, ghost, login. rounded-full, icon slot, focus ring UN-gold.</p><span class="text-[9px] text-white/30 font-mono">ui/Button.jsx</span></div>
                     </div>
-                    <div class="component-body"><p class="text-xs text-white/60 mb-4">Rodapé consolidado e clean: Apoiadores, Navegação Útil, Endereços, Redes.</p><div class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Clique para visualizar</div></div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="tag" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;Badge /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">9 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Label inline. font-black, uppercase, 9px-10px, tracking-widest. Cor customizável via prop color.</p><span class="text-[9px] text-white/30 font-mono">ui/Badge.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="heading" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;SectionHeader /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">58 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Cabeçalho de seção reutilizável com barra lateral colorida, badge, title+titleAccent com gradiente, description, slot de botão. Suporta modo inverted (dark).</p><span class="text-[9px] text-white/30 font-mono">ui/SectionHeader.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="square" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;Tile /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">36 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Bento Grid Card. 3 sizes: large (2x2), wide (2x1), small (1x1). Image cover com hover scale 110%, gradiente overlay, parallax translate. Usado no Bento Grid da Home.</p><span class="text-[9px] text-white/30 font-mono">ui/Tile.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="calendar-check" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;EventCard /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">50 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Card de evento com imagem 4:3, título, data, local, categoria, status badge (upcoming/pending). Hover elevação -translate-y-1, shadow-xl.</p><span class="text-[9px] text-white/30 font-mono">ui/EventCard.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="image" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;PageHero /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">24 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Hero de página interna. Background image com opacity 20%, gradiente + blur. Props: title, category (badge pill), description, image, color. Usado em Sobre, Eventos, etc.</p><span class="text-[9px] text-white/30 font-mono">ui/PageHero.jsx</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-3"><div class="p-2 bg-white/5 rounded-lg group-hover:bg-[#CCB146] transition-colors"><i data-lucide="heart-handshake" class="w-5 h-5 text-[#297D6D] group-hover:text-[#0f2942]"></i></div><h4 class="font-bold text-white/90 text-sm">&lt;SupporterLogos /&gt;</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">15 ln</span></div>
+                        <div class="component-body"><p class="text-xs text-white/60 mb-3">Barra de apoiadores institucionais: Aegea, MRV, Schneider Electric. Modo vertical/horizontal, label customizável.</p><span class="text-[9px] text-white/30 font-mono">ui/SupporterLogos.jsx</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAYER 4: PAGES (Route-Level Components) -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-2 h-8 bg-[#EC3740] rounded-full"></span>
+                    <h3 class="text-sm font-bold text-[#EC3740] uppercase tracking-[0.2em]">Pages — Roteamento (HashRouter)</h3>
+                    <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">9 arquivos</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="home" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;HomeContent /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Composição: Hero → Impact → Events → Pilares → News → Bento Grid → CTA. 101 linhas.</p><span class="text-[8px] text-white/25 font-mono">#/home</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="building" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;SobrePage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Sobre Nós, Rede Brasil, Governança, Apoiadores, Parceiros. 14.3kB — a maior página.</p><span class="text-[8px] text-white/25 font-mono">#/sobre</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="calendar" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;EventosPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Lista de eventos. Usa &lt;PageHero /&gt; + &lt;EventsListSection /&gt;.</p><span class="text-[8px] text-white/25 font-mono">#/eventos</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="newspaper" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;NoticiasPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Sala de Imprensa e News Hub. Usa &lt;PageHero /&gt; composicional.</p><span class="text-[8px] text-white/25 font-mono">#/noticias</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="target" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;NossaAgendaPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">10 Princípios, ODS, Ambição 2030, Movimentos, Plataformas de Ação.</p><span class="text-[8px] text-white/25 font-mono">#/agenda</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="briefcase" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;ProgramasPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">HUBs ODS, Liderança de Impacto, Diálogos DH&DEI, CFO Coalition, COPs.</p><span class="text-[8px] text-white/25 font-mono">#/programas</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="book-open" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;ConhecimentoPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Publicações, Academy, Cursos & Workshops, ESG, Guias e Relatórios.</p><span class="text-[8px] text-white/25 font-mono">#/conhecimento</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="user-plus" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;ParticiparPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Quero aderir, Benefícios, Critérios, Etapas de adesão, FAQ.</p><span class="text-[8px] text-white/25 font-mono">#/participar</span></div></div>
+                    <div class="component-card group"><div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="file-check" class="w-4 h-4 text-[#EC3740]"></i></div><h4 class="font-bold text-white/80 text-xs">&lt;CopPage /&gt;</h4></div></div><div class="component-body"><p class="text-[10px] text-white/50">Communication on Progress. 52.7kB — conteúdo extenso com formulários. A maior feature.</p><span class="text-[8px] text-white/25 font-mono">#/cop</span></div></div>
+                </div>
+            </div>
+
+            <!-- LAYER 5: HOOKS, DATA & UTILS -->
+            <div>
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-2 h-8 bg-[#6E417A] rounded-full"></span>
+                    <h3 class="text-sm font-bold text-[#6E417A] uppercase tracking-[0.2em]">Hooks, Data & Utils</h3>
+                    <span class="text-[9px] text-white/40 font-bold bg-white/5 px-2 py-0.5 rounded">3 arquivos</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="anchor" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">useHashRoute()</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">30 ln</span></div>
+                        <div class="component-body"><p class="text-[10px] text-white/50">Custom hook que escuta hashchange. Converte hash → routeKey via HASH_TO_ROUTE map. Expõe { currentRoute, navigate }.</p><span class="text-[8px] text-white/25 font-mono">hooks/useHashRoute.js</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="database" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">constants.js</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">323 ln</span></div>
+                        <div class="component-body"><p class="text-[10px] text-white/50">ROUTES, MOCK_EVENTS, PILLARS_DATA (4 pilares + 10 princípios), ODS_COLORS (18), HERO_SLIDES, MENU_DESTAQUES/EXPLORAR/PARTICIPAR, HEADER_PROGRAMAS/CONHECIMENTO, INSTITUTIONAL_STATS.</p><span class="text-[8px] text-white/25 font-mono">data/constants.js</span></div>
+                    </div>
+                    <div class="component-card group">
+                        <div class="component-header"><div class="flex items-center gap-2"><div class="p-1.5 bg-white/5 rounded-lg"><i data-lucide="wrench" class="w-4 h-4 text-[#6E417A]"></i></div><h4 class="font-bold text-white/80 text-xs">cn()</h4></div><span class="text-[9px] font-bold text-white/40 bg-white/5 px-2 py-0.5 rounded">util</span></div>
+                        <div class="component-body"><p class="text-[10px] text-white/50">Utility de merge de classes CSS (clsx/twMerge pattern). Usado em todos os componentes para conditional classNames.</p><span class="text-[8px] text-white/25 font-mono">utils/cn.js</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -976,94 +1047,244 @@
         </div>
 
         <!-- TAB CONTENT: INVENTÁRIO & SITEMAP -->
-        <div id="sitemap" class="tab-content hidden animate-fade-in">
+        <div id="sitemap" class="tab-content hidden animate-fade-in space-y-8">
+
+             <!-- 1. HASH ROUTES (App.jsx) -->
              <div class="bg-white/5 p-6 md:p-8 rounded-[1.5rem] border border-white/10 shadow-[0_20px_40px_-15px_rgba(10,25,47,0.3)]">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="globe-2" class="w-6 h-6 text-[#009EDB]"></i>
-                        <h3 class="text-xl font-bold text-white/90">Mapa de Migração de URLs (Redirect Plan v4)</h3>
+                        <i data-lucide="route" class="w-6 h-6 text-[#009EDB]"></i>
+                        <h3 class="text-lg font-bold text-white/90">Rotas do HashRouter <span class="text-xs text-white/40 font-mono ml-2">— App.jsx → useHashRoute()</span></h3>
                     </div>
-                    <button class="text-[10px] bg-[#CCB146] hover:bg-yellow-500 px-3 py-1.5 rounded-full font-bold text-[#0f2942] uppercase tracking-widest transition shadow-lg flex items-center gap-2">
-                        <i data-lucide="download" class="w-3 h-3"></i> CSV
-                    </button>
+                    <span class="text-[10px] bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30 px-3 py-1 rounded-full font-bold">9 Rotas</span>
                 </div>
                  <div class="overflow-x-auto rounded-[1rem] border border-white/10">
                     <table class="w-full seo-table">
                         <thead>
                             <tr>
-                                <th>URL Origem (WP Legado)</th>
-                                <th>Destino (HashRouter v4)</th>
+                                <th>Hash (v4)</th>
+                                <th>Componente Page</th>
+                                <th>Conteúdo / Seções</th>
+                                <th>Origem Legada (WP)</th>
                                 <th>Status</th>
-                                <th>Estratégia/Tipo de Rota</th>
                                 <th>Prioridade</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/</td>
+                                <td>&lt;HomeContent /&gt;</td>
+                                <td class="text-xs text-white/50">HeroCarousel → ImpactSection → EventsListSection → PillaresSection → NewsSection → Bento Grid (Tile) → CTA</td>
                                 <td>/ ou /home</td>
-                                <td>#/home</td>
                                 <td><span class="seo-badge bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30">301</span></td>
-                                <td>Home Content (Bento/Hero)</td>
                                 <td><span class="text-[#EC3740] font-bold text-xs uppercase">Crítica</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/sobre</td>
+                                <td>&lt;SobrePage /&gt;</td>
+                                <td class="text-xs text-white/50">Sobre Nós, Rede Brasil, Governança, Apoiadores, Parceiros. 14.3kB</td>
                                 <td>/quem-somos</td>
-                                <td>#/sobre</td>
                                 <td><span class="seo-badge bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30">301</span></td>
-                                <td>Consolidação institucional</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/eventos</td>
+                                <td>&lt;EventosPage /&gt;</td>
+                                <td class="text-xs text-white/50">PageHero + EventsListSection (EventCard × 4 MOCK_EVENTS)</td>
                                 <td>/nosso-trabalho/eventos</td>
-                                <td>#/eventos</td>
                                 <td><span class="seo-badge bg-[#CCB146]/20 text-[#CCB146] border border-[#CCB146]/30">Transição</span></td>
-                                <td>Events List Section</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/noticias</td>
+                                <td>&lt;NoticiasPage /&gt;</td>
+                                <td class="text-xs text-white/50">PageHero + NewsSection (horizontal carousel, 5 news cards)</td>
                                 <td>/noticias</td>
-                                <td>#/noticias</td>
                                 <td><span class="seo-badge bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30">301</span></td>
-                                <td>News Section (Bento Grid)</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/agenda</td>
+                                <td>&lt;NossaAgendaPage /&gt;</td>
+                                <td class="text-xs text-white/50">10 Princípios, ODS, Ambição 2030, Movimentos, Plataformas de Ação</td>
                                 <td>/plataformas-de-acao/*</td>
-                                <td>#/agenda</td>
                                 <td><span class="seo-badge bg-[#CCB146]/20 text-[#CCB146] border border-[#CCB146]/30">Reescrita</span></td>
-                                <td>Pillars Section</td>
                                 <td><span class="text-[#EC3740] font-bold text-xs uppercase">Crítica</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/programas</td>
+                                <td>&lt;ProgramasPage /&gt;</td>
+                                <td class="text-xs text-white/50">HUBs ODS & Multiplicadores, Liderança de Impacto, Diálogos DH&DEI, CFO Coalition, COPs</td>
                                 <td>/iniciativas/*</td>
-                                <td>#/programas</td>
                                 <td><span class="seo-badge bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30">301</span></td>
-                                <td>LPs de Alta Conversão</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/conhecimento</td>
+                                <td>&lt;ConhecimentoPage /&gt;</td>
+                                <td class="text-xs text-white/50">Publicações, Academy, Cursos & Workshops, ESG e sustentabilidade, Guias e relatórios</td>
                                 <td>/biblioteca-virtual</td>
-                                <td>#/conhecimento</td>
                                 <td><span class="seo-badge bg-[#009EDB]/20 text-[#009EDB] border border-[#009EDB]/30">Refatoração</span></td>
-                                <td>Nova interface de busca</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/participar</td>
+                                <td>&lt;ParticiparPage /&gt;</td>
+                                <td class="text-xs text-white/50">Quero aderir, Benefícios, Critérios & requisitos, Etapas de adesão, FAQ</td>
                                 <td>/como-aderir</td>
-                                <td>#/participar</td>
-                                <td><span class="seo-badge bg-[#009EDB]/20 text-[#009EDB] border border-[#009EDB]/30">Rebuild App</span></td>
-                                <td>App de Adesão Zero-Atrito</td>
+                                <td><span class="seo-badge bg-[#009EDB]/20 text-[#009EDB] border border-[#009EDB]/30">Rebuild</span></td>
                                 <td><span class="text-[#EC3740] font-bold text-xs uppercase">Crítica</span></td>
                             </tr>
                             <tr>
+                                <td class="font-mono text-[#CCB146]">#/cop</td>
+                                <td>&lt;CopPage /&gt;</td>
+                                <td class="text-xs text-white/50">Communication on Progress — 52.7kB. Formulários, prazos, orientações, FAQ</td>
                                 <td>/cop</td>
-                                <td>#/cop</td>
                                 <td><span class="seo-badge bg-[#297D6D]/20 text-[#297D6D] border border-[#297D6D]/30">301</span></td>
-                                <td>Communication on Progress</td>
                                 <td><span class="text-[#CCB146] font-bold text-xs uppercase">Alta</span></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+             </div>
+
+             <!-- 2. SUPER MENU NAVIGATION MAP -->
+             <div class="bg-white/5 p-6 md:p-8 rounded-[1.5rem] border border-white/10 shadow-[0_20px_40px_-15px_rgba(10,25,47,0.3)]">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="menu" class="w-6 h-6 text-[#CCB146]"></i>
+                        <h3 class="text-lg font-bold text-white/90">Mapa de Navegação — &lt;SuperMenu /&gt; <span class="text-xs text-white/40 ml-2">3 colunas × 10 categorias × ~30 subItems</span></h3>
+                    </div>
+                    <span class="text-[10px] bg-white/5 text-white/40 px-3 py-1 rounded-full font-bold font-mono">data/constants.js</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Coluna 1: DESTAQUES -->
+                    <div class="bg-white/5 rounded-2xl p-5 border border-white/5">
+                        <h4 class="text-[#CCB146] text-[10px] font-bold uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-2">MENU_DESTAQUES</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="globe" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Pacto Global</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ sobre</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Sobre Nós</div><div>Rede Brasil</div><div>Governança</div><div>Apoiadores</div><div>Parceiros</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="calendar" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Nossos Eventos</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ eventos</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Institucionais</div><div>Temáticos</div><div>Agenda de Eventos</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="file-text" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Notícias</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ noticias</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Últimas Notícias</div><div>Destaques</div><div>Sala de Imprensa</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna 2: EXPLORAR -->
+                    <div class="bg-white/5 rounded-2xl p-5 border border-white/5">
+                        <h4 class="text-[#CCB146] text-[10px] font-bold uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-2">MENU_EXPLORAR</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="target" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Nossa Agenda</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ agenda</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>10 Princípios</div><div>ODS</div><div>Ambição 2030</div><div>Movimentos</div><div>Plataformas de Ação</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="briefcase" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Programas</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ programas</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>HUBs ODS & Multiplicadores</div><div>Liderança de Impacto</div><div>Diálogos DH & DEI</div><div>CFO Coalition</div><div>COPs</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="book-open" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Conhecimento</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ conhecimento</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Publicações</div><div>Academy</div><div>Cursos & Workshops</div><div>ESG e sustentabilidade corporativa</div><div>Guias e relatórios</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna 3: PARTICIPAR -->
+                    <div class="bg-white/5 rounded-2xl p-5 border border-white/5">
+                        <h4 class="text-[#CCB146] text-[10px] font-bold uppercase tracking-[0.2em] mb-4 border-b border-white/10 pb-2">MENU_PARTICIPAR</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="users" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Participação</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ participar</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Quero aderir</div><div>Benefícios da participação</div><div>Critérios e requisitos</div><div>Etapas de adesão</div><div>FAQ</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="building-2" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Empresas Participantes</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ participar</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Quem faz parte</div><div>Casos e Boas Práticas</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="file-text" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">CoP</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ cop</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>O que é CoP</div><div>Como enviar a CoP</div><div>Prazos e Orientações</div><div>FAQ</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2"><i data-lucide="log-in" class="w-3.5 h-3.5 text-white/60"></i><span class="text-xs font-bold text-white/80">Parceria e Patrocínio</span><span class="text-[8px] text-white/25 font-mono ml-auto">→ participar</span></div>
+                                <div class="pl-6 space-y-1 text-[10px] text-white/40">
+                                    <div>Quero Patrocinar</div><div>Quero ser Parceiro</div><div>Quero Apoiar Iniciativas</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+             <!-- 3. CAPSULE HEADER NAV + FOOTER LINKS -->
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white/5 p-6 rounded-[1.5rem] border border-white/10">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="navigation" class="w-5 h-5 text-[#009EDB]"></i>
+                        <h4 class="text-sm font-bold text-white/80">Capsule Header — Pílula Central</h4>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between text-white/60 py-1.5 border-b border-white/5"><span>Sobre Nós</span><span class="font-mono text-white/30">→ sobre</span></div>
+                        <div class="flex justify-between text-white/60 py-1.5 border-b border-white/5"><span>Programas <span class="text-[9px] text-white/30">(dropdown: HUBs ODS, Liderança, DH&DEI, CFO, COPs)</span></span><span class="font-mono text-white/30">→ programas</span></div>
+                        <div class="flex justify-between text-white/60 py-1.5 border-b border-white/5"><span>Conhecimento <span class="text-[9px] text-white/30">(dropdown: Publicações, Academy, Cursos, ESG, Guias)</span></span><span class="font-mono text-white/30">→ conhecimento</span></div>
+                        <div class="flex justify-between text-white/60 py-1.5 border-b border-white/5"><span>Eventos</span><span class="font-mono text-white/30">→ eventos</span></div>
+                        <div class="flex justify-between text-white/60 py-1.5"><span>Notícias</span><span class="font-mono text-white/30">→ noticias</span></div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex gap-3">
+                        <span class="text-[9px] bg-white/5 text-white/40 px-2 py-1 rounded font-bold">🔍 Search → SuperMenu</span>
+                        <span class="text-[9px] bg-white/5 text-white/40 px-2 py-1 rounded font-bold">👤 Área do Participante</span>
+                        <span class="text-[9px] bg-[#CCB146]/20 text-[#CCB146] px-2 py-1 rounded font-bold">Quero Aderir (CTA)</span>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-6 rounded-[1.5rem] border border-white/10">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="layout-template" class="w-5 h-5 text-[#009EDB]"></i>
+                        <h4 class="text-sm font-bold text-white/80">Footer — 4 Colunas</h4>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-[10px] text-white/50">
+                        <div>
+                            <span class="text-[9px] text-white/70 font-bold block mb-2">Logo + Redes</span>
+                            <div class="space-y-1"><div>LinkedIn</div><div>Instagram</div><div>YouTube</div><div>X (Twitter)</div></div>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-white/70 font-bold block mb-2">Links Úteis</span>
+                            <div class="space-y-1"><div>Sobre Nós</div><div>Dez Princípios</div><div>ODS</div><div>Saiba quem já faz parte</div><div>Como aderir</div><div>CoP</div></div>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-white/70 font-bold block mb-2">Oportunidades & Políticas</span>
+                            <div class="space-y-1"><div>Trabalhe conosco</div><div>Política de Cookies</div><div>Privacidade (LP/Email)</div><div>Privacidade (Chatbot)</div></div>
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-white/70 font-bold block mb-2">Sala de Imprensa</span>
+                            <div class="space-y-1"><div>Botão "ACESSE" (CTA)</div><div class="text-[8px] text-white/30 mt-2">© 2026 Pacto Global - Rede Brasil</div></div>
+                        </div>
+                    </div>
                 </div>
              </div>
         </div>
