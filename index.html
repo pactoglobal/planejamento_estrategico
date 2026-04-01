@@ -1139,17 +1139,18 @@
                 phase: 'Nova versão do site', id: 'fase1',
                 phaseMonths: [0, 11], color: '#E81C60',
                 tasks: [
-                    { id:'t1', name:'Nova Página de Adesão',        tag:'SITE', months:[0,0], progress:0, status:'planned' },
-                    { id:'t2', name:'Nova Home',                    tag:'SITE', months:[1,1], progress:0, status:'planned' },
-                    { id:'t3', name:'Menu Pacto Global',            tag:'SITE', months:[3,3], progress:0, status:'planned' },
-                    { id:'t4', name:'Nova Página de Eventos',       tag:'SITE', months:[4,4], progress:0, status:'planned' },
-                    { id:'t5', name:'Novas Páginas para os 4 Pilares',tag:'SITE',months:[5,5],progress:0, status:'planned' },
-                    { id:'t6', name:'Novas Páginas das plataformas',tag:'SITE', months:[6,6], progress:0, status:'planned' },
-                    { id:'t7', name:'Novas Páginas Conhecimento',   tag:'SITE', months:[7,7], progress:0, status:'planned' },
-                    { id:'t8', name:'Novas Páginas Programas',      tag:'SITE', months:[8,8], progress:0, status:'planned' },
-                    { id:'t9', name:'Novas Páginas dos Hubs ODS',   tag:'SITE', months:[9,9], progress:0, status:'planned' },
-                    { id:'t10',name:'Novas Páginas de Notícia...',  tag:'SITE', months:[10,10], progress:0, status:'planned'},
-                    { id:'t11',name:'Novo Menu, Footer e Header',   tag:'SITE', months:[11,11], progress:0, status:'planned'}
+                    { id:'t1', name:'Nova pág Adesão e Home v3',    tag:'SITE', months:[0,0], progress:0, status:'planned' },
+                    { id:'t2', name:'Inicio de coleta de infos',    tag:'RESEARCH', months:[1,1], progress:0, status:'planned' },
+                    { id:'t3', name:'Página da CoP v4',             tag:'SITE', months:[2,2], progress:0, status:'planned' },
+                    { id:'t4', name:'Menu, Footer, Header, Sobre',  tag:'SITE', months:[3,3], progress:0, status:'planned' },
+                    { id:'t5', name:'Eventos, Notícias, Atuação...',tag:'SITE', months:[4,4], progress:0, status:'planned' },
+                    { id:'t6', name:'Programas & Publicações v4',   tag:'SITE', months:[5,5], progress:0, status:'planned' },
+                    { id:'t7', name:'Participação v4',              tag:'SITE', months:[6,6], progress:0, status:'planned' },
+                    { id:'t8', name:'Empresas Participantes v4',    tag:'SITE', months:[7,7], progress:0, status:'planned' },
+                    { id:'t9', name:'Refinamento SEO Técnico',      tag:'SEO', months:[8,8], progress:0, status:'planned' },
+                    { id:'t10',name:'Estratégia GEO / Localizada',  tag:'GEO', months:[9,9], progress:0, status:'planned'},
+                    { id:'t11',name:'Integração BI & Analytics',    tag:'DADOS', months:[10,10], progress:0, status:'planned'},
+                    { id:'t12',name:'Lançamento Ecossistema Full',  tag:'INFRA', months:[11,11], progress:0, status:'planned'}
                 ]
             },
             {
@@ -1175,7 +1176,7 @@
 
         function loadGanttState() {
             try {
-                const saved = localStorage.getItem('gantt_state_mkt_v1');
+                const saved = localStorage.getItem('gantt_state_mkt_v2');
                 if (!saved) return;
                 const state = JSON.parse(saved);
                 ganttData.forEach(p => p.tasks.forEach(t => {
@@ -1193,7 +1194,7 @@
             ganttData.forEach(p => p.tasks.forEach(t => {
                 state[t.id] = { progress: t.progress, status: t.status, name: t.name };
             }));
-            localStorage.setItem('gantt_state_mkt_v1', JSON.stringify(state));
+            localStorage.setItem('gantt_state_mkt_v2', JSON.stringify(state));
         }
 
         function findTask(taskId) {
