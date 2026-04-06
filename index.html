@@ -899,20 +899,20 @@
         <div class="px-4 py-6">
             <h2 class="text-[9px] font-black uppercase tracking-[0.2em] text-[#CCB146] mb-4 pl-2">Módulos</h2>
             <nav class="flex flex-col gap-1" id="sidebar-nav">
-                <button class="tab-btn active w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold transition-all" data-tab="roadmap">
-                    <i data-lucide="map" class="w-4 h-4"></i> Roadmap MKT
+                <button class="tab-btn active w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold transition-all" data-tab="roadmap" data-label="Cronograma de Entregas">
+                    <i data-lucide="gantt-chart" class="w-4 h-4"></i> Cronograma
                 </button>
-                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="componentes">
-                    <i data-lucide="component" class="w-4 h-4"></i> Componentes UI
+                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="componentes" data-label="Design System & UI Kit">
+                    <i data-lucide="layout-panel-left" class="w-4 h-4"></i> Design System
                 </button>
-                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="tecnica">
-                    <i data-lucide="code-2" class="w-4 h-4"></i> Base Técnica
+                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="tecnica" data-label="Arquitetura & Stack">
+                    <i data-lucide="server" class="w-4 h-4"></i> Arquitetura
                 </button>
-                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="squad">
-                    <i data-lucide="users" class="w-4 h-4"></i> Squad & Perfis
+                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="squad" data-label="Equipe & Responsáveis">
+                    <i data-lucide="users" class="w-4 h-4"></i> Equipe
                 </button>
-                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="sitemap">
-                    <i data-lucide="globe-2" class="w-4 h-4"></i> Sitemap
+                <button class="tab-btn w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-xs font-bold text-white/50 hover:bg-white/5 hover:text-white transition-all" data-tab="sitemap" data-label="Inventário & Sitemap">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i> Sitemap
                 </button>
             </nav>
         </div>
@@ -1594,35 +1594,80 @@
         </div>
     </div>
 
-    <footer class="bg-white border-t border-gray-200 mt-auto py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm text-[#1E3250] font-bold">Pacto Global da ONU - Rede Brasil</p>
-            <p class="text-xs text-gray-400 mt-2">Roadmap Estratégico Digital 2026 • v5.4</p>
-        </div>
-    </footer>
+
+
 
     <script>
         lucide.createIcons();
 
-        // TAB LOGIC
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
+        // TAB LOGIC — CRM Sidebar Navigation
+        (function initCRMTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const titleEl = document.getElementById('current-module-title');
+            const heroEl = document.getElementById('crm-hero');
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetId = tab.getAttribute('data-tab');
-                tabs.forEach(t => t.classList.remove('active', 'border-b-[#1E3250]', 'font-bold'));
-                contents.forEach(c => c.classList.add('hidden'));
-                tab.classList.add('active', 'border-b-[#1E3250]', 'font-bold');
-                document.getElementById(targetId).classList.remove('hidden');
-                
-                // Scroll para as abas em mobile se estiver muito abaixo
-                const tabsContainer = document.querySelector('.sticky-tabs');
-                if (window.scrollY > tabsContainer.offsetTop + 100) {
-                    window.scrollTo({ top: tabsContainer.offsetTop - 70, behavior: 'smooth' });
+            function switchTab(btn) {
+                const targetId = btn.getAttribute('data-tab');
+                const label = btn.getAttribute('data-label') || btn.textContent.trim();
+
+                // Deactivate all
+                tabBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-white/10', 'text-white');
+                    b.classList.add('text-white/50');
+                    b.style.borderLeft = '';
+                });
+
+                // Activate clicked
+                btn.classList.add('active', 'bg-white/10', 'text-white');
+                btn.classList.remove('text-white/50');
+                btn.style.borderLeft = '3px solid #009EDB';
+
+                // Show/hide contents
+                tabContents.forEach(c => c.classList.add('hidden'));
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.classList.remove('hidden');
+                    target.style.animation = 'none';
+                    void target.offsetHeight;
+                    target.style.animation = '';
                 }
-            });
-        });
+
+                // Update topbar title
+                if (titleEl) {
+                    titleEl.innerHTML = '<span class="w-2 h-2 rounded-sm bg-[#CCB146]"></span> ' + label;
+                }
+
+                // Show hero only for the roadmap/cronograma module
+                if (heroEl) {
+                    heroEl.style.display = (targetId === 'roadmap') ? '' : 'none';
+                }
+
+                // Scroll content area to top
+                const scrollArea = document.querySelector('.flex-1.overflow-y-auto');
+                if (scrollArea) scrollArea.scrollTop = 0;
+
+                // Close mobile sidebar
+                const sidebar = document.getElementById('crm-sidebar');
+                const overlay = document.getElementById('mobile-sidebar-overlay');
+                if (window.innerWidth < 768 && sidebar && overlay) {
+                    sidebar.style.transform = 'translateX(-100%)';
+                    overlay.style.display = 'none';
+                }
+            }
+
+            tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn)));
+
+            // Initialize first active tab state
+            const activeBtn = document.querySelector('.tab-btn.active');
+            if (activeBtn) {
+                activeBtn.style.borderLeft = '3px solid #009EDB';
+                activeBtn.classList.add('bg-white/10', 'text-white');
+                activeBtn.classList.remove('text-white/50');
+            }
+        })();
+
+
 
         // MODAL LOGIC
         function openModal(templateId) {
@@ -1964,13 +2009,13 @@
 
                 // Phase header row + add-task button
                 html += `<div class="gantt-phase-row" style="background:${phase.color}08; border-left:4px solid ${phase.color};">
-                    <div class="gantt-phase-label" style="position:relative;">
-                        <div class="gantt-phase-label-capsule" style="background:${phase.color}; shadow-color: ${phase.color}44;">${phase.phase}</div>
-                        <button onclick="openAddTaskModal('${phase.id}','${phase.phase.replace(/'/g,"\\'")}')"
-                                style="position:absolute;top:4px;right:4px;background:rgba(255,255,255,0.12);
-                                       border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:white;
-                                       font-size:0.62rem;font-weight:800;padding:2px 7px;cursor:pointer;
-                                       transition:all 0.15s;" title="Adicionar tarefa nesta fase">＋</button>
+                    <div class="gantt-phase-label" style="display:flex;align-items:center;gap:6px;padding:0 8px;">
+                        <div class="gantt-phase-label-capsule" style="background:${phase.color}; flex:1; min-width:0;">${phase.phase}</div>
+                        <button onclick="openAddTaskModal('${phase.id}','${phase.phase.replace(/'/g,"\\'")}')" 
+                                style="flex-shrink:0;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:white;
+                                       font-size:0.7rem;font-weight:800;width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+                                       cursor:pointer;transition:all 0.15s;line-height:1;" 
+                                title="Adicionar tarefa nesta fase">＋</button>
                     </div>
                     <div class="gantt-phase-timeline">
                         ${MONTHS.map((_, i) => {
@@ -2141,24 +2186,45 @@
             const tag   = document.getElementById('new-task-tag')?.value;
             const start = parseInt(document.getElementById('new-task-start')?.value);
             const end   = parseInt(document.getElementById('new-task-end')?.value);
-            if (!name) { alert('Digite o nome da tarefa.'); return; }
-            if (end < start) { alert('O mês de fim não pode ser antes do início.'); return; }
+            if (!name) { showBrandToast('Campo obrigatório', 'Digite o nome da tarefa.', 'error'); return; }
+            if (end < start) { showBrandToast('Datas inválidas', 'O mês de fim não pode ser antes do início.', 'error'); return; }
             try {
                 await addTaskToSupabase(phaseId, name, tag, start, end);
                 document.getElementById('add-task-modal')?.remove();
+                showBrandToast('Tarefa criada', `"${name}" adicionada com sucesso.`, 'success');
                 await loadFromSupabase();
-            } catch(err) { alert('Erro ao salvar: ' + err.message); }
+            } catch(err) { showBrandToast('Erro ao salvar', err.message, 'error'); }
         }
 
-        // --- CRUD: Delete Task ---
         async function confirmDeleteTask(taskId) {
             const task = findTask(taskId);
             if (!task) return;
-            if (!confirm(`Deletar "${task.name}"?\n\nEsta ação é permanente.`)) return;
+            // Inline branded confirm
+            const confirmed = await new Promise(resolve => {
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'position:fixed;inset:0;z-index:400;background:rgba(10,25,47,0.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;';
+                overlay.innerHTML = `
+                    <div style="background:#1E3250;border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:28px;max-width:340px;width:90%;text-align:center;">
+                        <div style="width:44px;height:44px;background:rgba(236,55,64,0.15);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+                            <svg width="20" height="20" fill="none" stroke="#EC3740" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        </div>
+                        <p style="color:white;font-weight:700;font-size:0.9rem;margin-bottom:6px;">Deletar tarefa?</p>
+                        <p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin-bottom:20px;">&ldquo;${task.name}&rdquo; será removida permanentemente.</p>
+                        <div style="display:flex;gap:8px;justify-content:center;">
+                            <button id="_del-cancel" style="flex:1;padding:10px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:0.5rem;color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:700;cursor:pointer;">Cancelar</button>
+                            <button id="_del-confirm" style="flex:1;padding:10px;background:#EC3740;border:none;border-radius:0.5rem;color:white;font-size:0.75rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;">Deletar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(overlay);
+                overlay.querySelector('#_del-cancel').onclick = () => { overlay.remove(); resolve(false); };
+                overlay.querySelector('#_del-confirm').onclick = () => { overlay.remove(); resolve(true); };
+            });
+            if (!confirmed) return;
             try {
                 await deleteTaskFromSupabase(taskId);
+                showBrandToast('Tarefa removida', 'A entrega foi excluída com sucesso.', 'success');
                 await loadFromSupabase();
-            } catch(err) { alert('Erro ao deletar: ' + err.message); }
+            } catch(err) { showBrandToast('Erro ao deletar', err.message, 'error'); }
         }
 
         // --- Progress popover ---
