@@ -1715,11 +1715,16 @@
         async function loadFromSupabase() {
             try {
                 showSyncStatus('loading');
-                const { data: phases, error: pe } = await db.from('phases').select('*').order('sort_order');
-                if (pe) throw pe;
+                const [phasesRes, tasksRes] = await Promise.all([
+                    db.from('phases').select('*').order('sort_order'),
+                    db.from('tasks').select('*').order('sort_order')
+                ]);
 
-                const { data: tasks, error: te } = await db.from('tasks').select('*').order('sort_order');
-                if (te) throw te;
+                if (phasesRes.error) throw phasesRes.error;
+                if (tasksRes.error) throw tasksRes.error;
+
+                const phases = phasesRes.data;
+                const tasks = tasksRes.data;
 
                 ganttData = phases.map(p => ({
                     id:          p.id,
@@ -2126,13 +2131,35 @@
             const pop = document.createElement('div');
             pop.className = 'progress-popover';
             pop.id = 'progress-popover';
+            // Added inline styles to support more inputs without breaking layout
+            pop.style.width = '260px'; // wider to fit dates
             pop.innerHTML = `
-                <h4>${task.name}</h4>
+                <h4 style="margin-bottom:8px;">${task.name}</h4>
+                
+                <!-- Datas -->
+                <div style="display:flex;gap:8px;margin-bottom:12px;width:100%;">
+                    <div style="flex:1;">
+                        <label style="color:#94A3B8;font-size:0.55rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:2px;">Início</label>
+                        <select id="edit-task-start-${taskId}" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:4px;color:white;font-size:0.7rem;width:100%;outline:none;">
+                            ${MONTHS.map((m,i) => `<option value="${i}" ${i === task.months[0] ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <label style="color:#94A3B8;font-size:0.55rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:2px;">Fim</label>
+                        <select id="edit-task-end-${taskId}" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:4px;color:white;font-size:0.7rem;width:100%;outline:none;">
+                            ${MONTHS.map((m,i) => `<option value="${i}" ${i === task.months[1] ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Progresso -->
+                <label style="color:#94A3B8;font-size:0.55rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:2px;">Progresso</label>
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
                     <span style="font-size:0.62rem;color:#94A3B8;font-weight:600;">0%</span>
                     <input type="range" class="progress-slider" min="0" max="100" value="${task.progress}" id="slider-${taskId}" style="flex:1;">
                     <span style="font-size:0.62rem;color:#94A3B8;font-weight:600;">100%</span>
                 </div>
+                
                 <div style="display:flex;justify-content:space-between;align-items:center;">
                     <span id="slider-display-${taskId}" style="font-size:1.3rem;font-weight:900;color:#009EDB;">${task.progress}%</span>
                     <button onclick="applyProgress('${taskId}')"
@@ -2147,55 +2174,57 @@
             document.body.appendChild(pop);
             _activePopover = taskId;
 
-            // Position
+            // Position (adjust logic to prevent overflow with slightly larger popover)
             const rect = event.currentTarget.getBoundingClientRect();
             let top  = rect.bottom + 10;
             let left = rect.left;
-            if (left + 270 > window.innerWidth)  left = window.innerWidth - 278;
-            if (top  + 150 > window.innerHeight)  top  = rect.top - 158;
+            if (left + 280 > window.innerWidth)  left = window.innerWidth - 280;
+            if (top  + 180 > window.innerHeight)  top  = rect.top - 180;
             pop.style.top  = top  + 'px';
             pop.style.left = left + 'px';
 
-            // Live preview
+            // Live preview only updates text now, since re-rendering Gantt handles the bar
             document.getElementById(`slider-${taskId}`).addEventListener('input', e => {
                 const val = parseInt(e.target.value);
                 document.getElementById(`slider-display-${taskId}`).textContent = val + '%';
-                const fill = document.getElementById(`fill-${taskId}`);
-                if (fill) {
-                    fill.style.width = val + '%';
-                    fill.innerHTML = val > 14 ? `<span class="gantt-bar-pct">${val}%</span>` : '';
-                }
             });
         }
 
         function applyProgress(taskId) {
             const slider = document.getElementById(`slider-${taskId}`);
-            if (!slider) return;
-            const val  = parseInt(slider.value);
+            const startSelect = document.getElementById(`edit-task-start-${taskId}`);
+            const endSelect = document.getElementById(`edit-task-end-${taskId}`);
+            if (!slider || !startSelect || !endSelect) return;
+            
+            const val = parseInt(slider.value);
+            const start = parseInt(startSelect.value);
+            const end = parseInt(endSelect.value);
+            
             const task = findTask(taskId);
             if (!task) return;
-            task.progress = val;
+            
+            if (end < start) {
+                alert("O mês de fim não pode ser anterior ao início.");
+                return;
+            }
 
-            // Auto-status
+            const old = { progress: task.progress, status: task.status, start_month: task.months[0], end_month: task.months[1] };
+            
+            // Update local object
+            task.progress = val;
+            task.months = [start, end];
+
+            // Auto-status logic
             if (val === 100 && task.status !== 'blocked') task.status = 'done';
             else if (val > 0  && task.status === 'planned') task.status = 'active';
             else if (val === 0 && task.status === 'done')   task.status = 'planned';
 
-            const old = { progress: task.progress, status: task.status };
-            task.progress = val;
             saveGanttState();
-            saveTaskToSupabase(taskId, { progress: val, status: task.status }, old);
+            saveTaskToSupabase(taskId, { progress: val, status: task.status, start_month: start, end_month: end }, old);
+            
             closeProgressPopover();
-
-            const badge = document.getElementById(`badge-${taskId}`);
-            const bar   = document.getElementById(`bar-${taskId}`);
-            const fill  = document.getElementById(`fill-${taskId}`);
-            const c = getStatusColor(task.status);
-
-            if (badge) { badge.className = `status-badge ${STATUS_CLASSES[task.status]}`; badge.textContent = `${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}`; }
-            if (bar)   bar.style.background  = c + '28';
-            if (fill)  { fill.style.background = c; fill.style.width = val + '%'; fill.innerHTML = val > 14 ? `<span class="gantt-bar-pct">${val}%</span>` : ''; }
-            renderSummary();
+            // Re-render completely since bar position/width might have changed
+            renderGantt();
         }
 
         function closeProgressPopover() {
@@ -2227,9 +2256,11 @@
                 el.contentEditable = 'false';
                 el.style.outline = el.style.padding = '';
                 const newName = el.textContent.trim();
-                if (newName) { 
-                    task.name = newName; 
-                    saveGanttState(); 
+                if (newName && newName !== task.name) {
+                    const oldName = task.name;
+                    task.name = newName;
+                    saveGanttState();
+                    saveTaskToSupabase(taskId, { name: newName }, { name: oldName });
                     renderGantt(); // Re-render to split into capsules again
                 } else {
                     renderGantt(); // Restore capsules
