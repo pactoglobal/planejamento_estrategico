@@ -246,17 +246,17 @@
                 </div>
             </div>
             <h2 class="text-lg font-black text-white uppercase tracking-widest">Painel Protegido</h2>
-            <p class="text-xs text-white/50 mb-2">Insira seu e-mail corporativo para receber um código de acesso momentâneo.</p>
+            <p class="text-xs text-white/50 mb-2">Insira seu e-mail corporativo e o seu PIN de Controle para acessar o painel.</p>
             
             <!-- Step 1: Request -->
             <div id="auth-step-1" class="flex flex-col gap-3">
                 <input type="email" id="auth-email" placeholder="E-mail" class="bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#009EDB]">
-                <button onclick="requestAuthCode()" id="btn-request-auth" class="bg-[#009EDB] text-white font-bold rounded-lg py-3 hover:bg-[#0080B8] transition-colors">Receber Código</button>
+                <button onclick="requestAuthCode()" id="btn-request-auth" class="bg-[#009EDB] text-white font-bold rounded-lg py-3 hover:bg-[#0080B8] transition-colors">Continuar</button>
             </div>
 
             <!-- Step 2: Verify -->
             <div id="auth-step-2" class="flex flex-col gap-3 hidden">
-                <input type="text" id="auth-code" placeholder="000000" class="bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-xl text-white placeholder-white/20 text-center tracking-[0.5em] font-mono focus:outline-none focus:border-[#009EDB]" maxlength="6">
+                <input type="password" id="auth-code" placeholder="******" class="bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-xl text-white placeholder-white/20 text-center tracking-[0.5em] font-mono focus:outline-none focus:border-[#009EDB]" maxlength="6">
                 <button onclick="verifyAuthCode()" id="btn-verify-auth" class="bg-[#059669] text-white font-bold rounded-lg py-3 hover:bg-green-700 transition-colors uppercase tracking-widest text-xs">Acessar</button>
                 <button onclick="document.getElementById('auth-step-1').classList.remove('hidden'); document.getElementById('auth-step-2').classList.add('hidden');" class="text-xs text-white/40 hover:text-white mt-1">Voltar</button>
             </div>
@@ -2364,41 +2364,27 @@
             const email = document.getElementById('auth-email').value.trim();
             if(!email) return showBrandToast('Campo Vazio', 'Por favor, insira o seu e-mail corporativo.', 'error');
             
-            const btn = document.getElementById('btn-request-auth');
-            btn.textContent = 'Enviando...';
-            btn.disabled = true;
-
-            const { error } = await db.auth.signInWithOtp({ email });
-            
-            btn.disabled = false;
-            btn.textContent = 'Receber Código';
-
-            if (error) {
-                showBrandToast('Erro no Envio', error.message, 'error');
-            } else {
-                document.getElementById('auth-step-1').classList.add('hidden');
-                document.getElementById('auth-step-2').classList.remove('hidden');
-                document.getElementById('auth-code').focus();
-                showBrandToast('Código Enviado', 'E-mail enviado! Pode levar de 1 a 2 minutos.', 'success');
-            }
+            document.getElementById('auth-step-1').classList.add('hidden');
+            document.getElementById('auth-step-2').classList.remove('hidden');
+            document.getElementById('auth-code').focus();
         }
 
         async function verifyAuthCode() {
             const email = document.getElementById('auth-email').value.trim();
             const token = document.getElementById('auth-code').value.trim();
-            if(!token || token.length < 6) return showBrandToast('Atenção', 'Digite o código de 6 dígitos enviado para o seu e-mail.', 'info');
+            if(!token || token.length < 6) return showBrandToast('Atenção', 'Digite o seu PIN de Controle de 6 dígitos.', 'info');
 
             const btn = document.getElementById('btn-verify-auth');
             btn.textContent = 'Verificando...';
             btn.disabled = true;
 
-            const { data, error } = await db.auth.verifyOtp({ email, token, type: 'email' });
+            const { data, error } = await db.auth.signInWithPassword({ email: email, password: token });
             
             btn.disabled = false;
             btn.textContent = 'Acessar';
 
             if (error) {
-                showBrandToast('Falha na Validação', 'O código de acesso é inválido ou expirou.', 'error');
+                showBrandToast('Acesso Negado', 'PIN incorreto. Tente novamente.', 'error');
             } else if (data.session) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 showBrandToast('Acesso Liberado', 'Autenticação concluída com sucesso.', 'success');
