@@ -215,6 +215,8 @@
     <!-- Bibliotecas Exportação Gantt -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="flex flex-col min-h-screen">
 
@@ -847,9 +849,9 @@
                 <img src="./assets/img/Brazil_logotype_translation_white.png" alt="Pacto Global" class="h-7 md:h-9 w-auto" onerror="this.style.display='none'"/>
             </div>
             <h1 class="text-white font-black text-[10px] md:text-xs uppercase tracking-[0.25em]">Planejamento Estratégico <span class="text-[#CCB146]">2026</span></h1>
-            <div class="text-[9px] font-bold text-[#0f2942] bg-[#CCB146] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-2">
+            <div id="quarter-badge" class="text-[9px] font-bold text-[#0f2942] bg-[#CCB146] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-2">
                 <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                Q1 2026
+                <span id="quarter-label">Q1 2026</span>
             </div>
         </div>
     </header>
@@ -1640,17 +1642,31 @@
         }
 
         // ==========================================
+        // SUPABASE CONFIG
+        // ==========================================
+        const SUPABASE_URL  = 'https://lprrdspmgyaiyrpgbplp.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwcnJkc3BtZ3lhaXlycGdicGxwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0ODUwNDAsImV4cCI6MjA5MTA2MTA0MH0.E0E0S2ft4G2Hp1J3dT9Tzq3CkMSKktv8zEfneVP-z8E';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+        // ==========================================
         // GANTT CHART ENGINE
         // ==========================================
 
         const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
         const CURRENT_MONTH = new Date().getMonth(); // 0-indexed
+        const CURRENT_YEAR  = new Date().getFullYear();
+        const CURRENT_Q     = Math.floor(CURRENT_MONTH / 3) + 1;
         const STATUSES = ['planned','active','done','blocked'];
         const STATUS_LABELS = { planned:'Planejado', active:'Em Andamento', done:'Concluído', blocked:'Bloqueado' };
         const STATUS_CLASSES = { planned:'status-planned', active:'status-active', done:'status-done', blocked:'status-blocked' };
         const STATUS_ICONS  = { planned:'○', active:'▶', done:'✓', blocked:'✕' };
 
-        const ganttData = [
+        // Set dynamic quarter badge
+        const qLabel = document.getElementById('quarter-label');
+        if (qLabel) qLabel.textContent = `Q${CURRENT_Q} ${CURRENT_YEAR}`;
+
+        // ganttData is populated from Supabase
+        let ganttData = [
             {
                 phase: 'Nova versão do site', id: 'fase1',
                 phaseMonths: [0, 11], color: '#E81C60',
@@ -1690,31 +1706,119 @@
             }
         ];
 
-        const GANTT_SCHEMA_V = 4; // Increment this when task IDs/months change to force a fresh load
+        // ==========================================
+        // SUPABASE DATA LAYER
+        // ==========================================
 
+        let _lastSync = null;
+
+        async function loadFromSupabase() {
+            try {
+                showSyncStatus('loading');
+                const { data: phases, error: pe } = await db.from('phases').select('*').order('sort_order');
+                if (pe) throw pe;
+
+                const { data: tasks, error: te } = await db.from('tasks').select('*').order('sort_order');
+                if (te) throw te;
+
+                ganttData = phases.map(p => ({
+                    id:          p.id,
+                    phase:       p.name,
+                    color:       p.color,
+                    phaseMonths: [p.start_month, p.end_month],
+                    tasks: tasks
+                        .filter(t => t.phase_id === p.id)
+                        .map(t => ({
+                            id:       t.id,
+                            name:     t.name,
+                            tag:      t.tag,
+                            months:   [t.start_month, t.end_month],
+                            progress: t.progress,
+                            status:   t.status
+                        }))
+                }));
+
+                _lastSync = new Date();
+                showSyncStatus('ok');
+                renderGantt();
+            } catch(err) {
+                console.warn('Supabase load failed, using localStorage fallback:', err);
+                showSyncStatus('error');
+                loadGanttState();
+                renderGantt();
+            }
+        }
+
+        async function saveTaskToSupabase(taskId, fields, oldTask) {
+            try {
+                const { error } = await db.from('tasks').update({ ...fields, updated_at: new Date().toISOString() }).eq('id', taskId);
+                if (error) throw error;
+                // Log the progress change
+                if (fields.progress !== undefined || fields.status !== undefined) {
+                    await db.from('progress_log').insert({
+                        task_id:      taskId,
+                        old_progress: oldTask?.progress,
+                        new_progress: fields.progress ?? oldTask?.progress,
+                        old_status:   oldTask?.status,
+                        new_status:   fields.status ?? oldTask?.status,
+                        changed_by:   'brenerpompeo'
+                    });
+                }
+                _lastSync = new Date();
+                showSyncStatus('ok');
+            } catch(err) { console.warn('Supabase save error:', err); showSyncStatus('error'); }
+        }
+
+        async function addTaskToSupabase(phaseId, name, tag, startMonth, endMonth) {
+            const newId = 'task_' + Date.now();
+            const { data, error } = await db.from('tasks').insert({
+                id: newId, phase_id: phaseId, name, tag, start_month: startMonth,
+                end_month: endMonth, progress: 0, status: 'planned', sort_order: 99
+            }).select().single();
+            if (error) throw error;
+            return data;
+        }
+
+        async function deleteTaskFromSupabase(taskId) {
+            const { error } = await db.from('tasks').delete().eq('id', taskId);
+            if (error) throw error;
+        }
+
+        async function addPhaseToSupabase(name, color, startMonth, endMonth) {
+            const { data, error } = await db.from('phases').insert({
+                name, color, start_month: startMonth, end_month: endMonth, sort_order: 99
+            }).select().single();
+            if (error) throw error;
+            return data;
+        }
+
+        function showSyncStatus(state) {
+            let el = document.getElementById('sync-status');
+            if (!el) return;
+            const icons = { loading: '⟳ Sincronizando...', ok: '✓ Sincronizado', error: '⚠ Offline (cache local)' };
+            const colors = { loading: '#94A3B8', ok: '#059669', error: '#D97706' };
+            el.textContent = icons[state] || '';
+            el.style.color = colors[state] || '#94A3B8';
+            if (_lastSync && state === 'ok') {
+                el.textContent += ` · ${_lastSync.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'})}`;
+            }
+        }
+
+        // localStorage fallback
+        const GANTT_SCHEMA_V = 4;
         function loadGanttState() {
             try {
                 const saved = localStorage.getItem('gantt_state_mkt_v2');
                 if (!saved) return;
                 const state = JSON.parse(saved);
-                // If schema version changed (new task definitions), discard cached data
-                if (state.__schema !== GANTT_SCHEMA_V) {
-                    localStorage.removeItem('gantt_state_mkt_v2');
-                    return;
-                }
-                let needsSave = false;
+                if (state.__schema !== GANTT_SCHEMA_V) { localStorage.removeItem('gantt_state_mkt_v2'); return; }
                 ganttData.forEach(p => p.tasks.forEach(t => {
                     if (state[t.id]) {
                         t.progress = state[t.id].progress ?? t.progress;
                         t.status   = state[t.id].status   ?? t.status;
-                        if (state[t.id].name) {
-                            let cleanedName = state[t.id].name.replace(/\s*v[34]\s*/gi, '').trim();
-                            if (cleanedName !== state[t.id].name) needsSave = true;
-                            t.name = cleanedName;
-                        }
+                        t.name     = state[t.id].name     ?? t.name;
                     }
                 }));
-                if (needsSave) saveGanttState();
             } catch(e) { /* ignore */ }
         }
 
@@ -1772,12 +1876,15 @@
                 <div class="g-summary-card">
                     <div class="s-label">Fases</div>
                     <div class="s-value">${ganttData.length}</div>
-                    <div class="s-sub">Q1 → Q4 · 2026</div>
+                    <div class="s-sub">Q${CURRENT_Q} · ${CURRENT_YEAR}</div>
                 </div>
                 <div class="g-summary-card">
                     <div class="s-label">Meses Restantes</div>
                     <div class="s-value" style="color:#D97706">${remaining}</div>
-                    <div class="s-sub">Até Dezembro/2026</div>
+                    <div class="s-sub">
+                        Até Dezembro/${CURRENT_YEAR}
+                        <span id="sync-status" style="display:block;font-size:0.55rem;margin-top:2px;color:#94A3B8;">⟳ Carregando...</span>
+                    </div>
                 </div>
             `;
         }
@@ -1807,14 +1914,16 @@
 
             ganttData.forEach(phase => {
                 const [ps, pe] = phase.phaseMonths;
-                const phaseSpan = pe - ps + 1;
 
-                // Phase header row
+                // Phase header row + add-task button
                 html += `<div class="gantt-phase-row" style="background:${phase.color}08; border-left:4px solid ${phase.color};">
-                    <div class="gantt-phase-label">
-                        <div class="gantt-phase-label-capsule" style="background:${phase.color}; shadow-color: ${phase.color}44;">
-                            ${phase.phase}
-                        </div>
+                    <div class="gantt-phase-label" style="position:relative;">
+                        <div class="gantt-phase-label-capsule" style="background:${phase.color}; shadow-color: ${phase.color}44;">${phase.phase}</div>
+                        <button onclick="openAddTaskModal('${phase.id}','${phase.phase.replace(/'/g,"\\'")}')"
+                                style="position:absolute;top:4px;right:4px;background:rgba(255,255,255,0.12);
+                                       border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:white;
+                                       font-size:0.62rem;font-weight:800;padding:2px 7px;cursor:pointer;
+                                       transition:all 0.15s;" title="Adicionar tarefa nesta fase">＋</button>
                     </div>
                     <div class="gantt-phase-timeline">
                         ${MONTHS.map((_, i) => {
@@ -1831,18 +1940,16 @@
                     const barColor = getStatusColor(task.status);
                     const barLeft  = `calc(${ts} / 12 * 100% + 3px)`;
                     const barWidth = `calc(${taskSpan} / 12 * 100% - 6px)`;
-                    
-                    // Logic for versioning based on month (April = index 3 = V4)
+
                     const isV4 = ts >= 3;
                     const versionClass = isV4 ? 'v4-capsule' : 'v3-capsule';
                     const versionBadge = isV4 ? '<div class="version-badge v4-badge">V.4</div>' : '<div class="version-badge v3-badge">V.3</div>';
 
-                    // Split name if it has commas
                     const items = task.name.split(',').map(s => s.trim());
                     const nameHtml = items.map(item => `<span class="gantt-item-capsule">${item}</span>`).join('');
 
-                    html += `<div class="gantt-task-row">
-                        <div class="gantt-task-label">
+                    html += `<div class="gantt-task-row" id="row-${task.id}">
+                        <div class="gantt-task-label" style="position:relative;">
                             <div class="gantt-task-capsule ${versionClass}">
                                 <div style="display:flex;align-items:flex-start;gap:2px;">
                                     ${versionBadge}
@@ -1850,6 +1957,11 @@
                                          id="name-${task.id}"
                                          ondblclick="editTaskName('${task.id}', this)"
                                          title="Duplo clique para renomear">${nameHtml}</div>
+                                    <button onclick="confirmDeleteTask('${task.id}')"
+                                            style="margin-left:auto;flex-shrink:0;opacity:0;background:rgba(220,38,38,0.2);
+                                                   border:1px solid rgba(220,38,38,0.3);border-radius:4px;color:#DC2626;
+                                                   font-size:0.55rem;padding:1px 5px;cursor:pointer;transition:opacity 0.15s;"
+                                            class="delete-task-btn" title="Deletar tarefa">✕</button>
                                 </div>
                                 <div style="display:flex;align-items:center;gap:6px;margin-top:auto;">
                                     <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:${phase.color};opacity:0.9;">${task.tag}</span>
@@ -1878,6 +1990,16 @@
                 });
             });
 
+            // Show delete btn on hover
+            setTimeout(() => {
+                document.querySelectorAll('.gantt-task-row').forEach(row => {
+                    const btn = row.querySelector('.delete-task-btn');
+                    if (!btn) return;
+                    row.addEventListener('mouseenter', () => btn.style.opacity = '1');
+                    row.addEventListener('mouseleave', () => btn.style.opacity = '0');
+                });
+            }, 50);
+
             // --- V4 Start Marker (April) ---
             const v4Left = `calc(240px + (3 / 12) * (100% - 240px))`;
             html += `<div class="v4-marker" style="left:${v4Left}; width:calc(100% - ${v4Left});">
@@ -1895,8 +2017,10 @@
         function cycleStatus(taskId) {
             const task = findTask(taskId);
             if (!task) return;
+            const old = { ...task };
             task.status = STATUSES[(STATUSES.indexOf(task.status) + 1) % STATUSES.length];
             saveGanttState();
+            saveTaskToSupabase(taskId, { status: task.status }, old);
 
             const badge = document.getElementById(`badge-${taskId}`);
             if (badge) {
@@ -1909,6 +2033,85 @@
             if (bar)  bar.style.background  = c + '28';
             if (fill) fill.style.background = c;
             renderSummary();
+        }
+
+        // --- CRUD: Add Task Modal ---
+        function openAddTaskModal(phaseId, phaseName) {
+            const existing = document.getElementById('add-task-modal');
+            if (existing) existing.remove();
+
+            const modal = document.createElement('div');
+            modal.id = 'add-task-modal';
+            modal.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(15,41,66,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;';
+            modal.innerHTML = `
+                <div style="background:#1E3250;border:1px solid rgba(255,255,255,0.12);border-radius:1.5rem;padding:28px;width:100%;max-width:440px;box-shadow:0 25px 60px rgba(0,0,0,0.5);animation:fadeIn 0.18s ease;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                        <h3 style="color:white;font-size:0.85rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;">＋ Nova Tarefa</h3>
+                        <span style="font-size:0.65rem;color:#CCB146;font-weight:700;">${phaseName}</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <input id="new-task-name" type="text" placeholder="Nome da tarefa (use vírgulas para sub-cápsulas)"
+                               style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;padding:10px 14px;
+                                      color:white;font-size:0.8rem;outline:none;width:100%;" />
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+                            <div>
+                                <label style="color:rgba(255,255,255,0.4);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px;">Tag</label>
+                                <select id="new-task-tag" style="background:#162840;border:1px solid rgba(255,255,255,0.12);border-radius:0.5rem;padding:8px;color:white;font-size:0.75rem;width:100%;">
+                                    <option>SITE</option><option>SEO</option><option>GEO</option><option>DADOS</option>
+                                    <option>DESIGN</option><option>LEADS</option><option>INFRA</option><option>RESEARCH</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="color:rgba(255,255,255,0.4);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px;">Início</label>
+                                <select id="new-task-start" style="background:#162840;border:1px solid rgba(255,255,255,0.12);border-radius:0.5rem;padding:8px;color:white;font-size:0.75rem;width:100%;">
+                                    ${MONTHS.map((m,i) => `<option value="${i}" ${i === CURRENT_MONTH ? 'selected' : ''}>${m}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label style="color:rgba(255,255,255,0.4);font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:4px;">Fim</label>
+                                <select id="new-task-end" style="background:#162840;border:1px solid rgba(255,255,255,0.12);border-radius:0.5rem;padding:8px;color:white;font-size:0.75rem;width:100%;">
+                                    ${MONTHS.map((m,i) => `<option value="${i}" ${i === CURRENT_MONTH ? 'selected' : ''}>${m}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:8px;">
+                            <button onclick="document.getElementById('add-task-modal').remove()"
+                                    style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;
+                                           color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:700;padding:10px;cursor:pointer;">Cancelar</button>
+                            <button onclick="submitAddTask('${phaseId}')"
+                                    style="flex:2;background:#009EDB;border:none;border-radius:0.75rem;color:white;
+                                           font-size:0.75rem;font-weight:800;padding:10px;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;">Salvar Tarefa</button>
+                        </div>
+                    </div>
+                </div>`;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+            setTimeout(() => document.getElementById('new-task-name')?.focus(), 50);
+        }
+
+        async function submitAddTask(phaseId) {
+            const name  = document.getElementById('new-task-name')?.value?.trim();
+            const tag   = document.getElementById('new-task-tag')?.value;
+            const start = parseInt(document.getElementById('new-task-start')?.value);
+            const end   = parseInt(document.getElementById('new-task-end')?.value);
+            if (!name) { alert('Digite o nome da tarefa.'); return; }
+            if (end < start) { alert('O mês de fim não pode ser antes do início.'); return; }
+            try {
+                await addTaskToSupabase(phaseId, name, tag, start, end);
+                document.getElementById('add-task-modal')?.remove();
+                await loadFromSupabase();
+            } catch(err) { alert('Erro ao salvar: ' + err.message); }
+        }
+
+        // --- CRUD: Delete Task ---
+        async function confirmDeleteTask(taskId) {
+            const task = findTask(taskId);
+            if (!task) return;
+            if (!confirm(`Deletar "${task.name}"?\n\nEsta ação é permanente.`)) return;
+            try {
+                await deleteTaskFromSupabase(taskId);
+                await loadFromSupabase();
+            } catch(err) { alert('Erro ao deletar: ' + err.message); }
         }
 
         // --- Progress popover ---
@@ -1978,7 +2181,10 @@
             else if (val > 0  && task.status === 'planned') task.status = 'active';
             else if (val === 0 && task.status === 'done')   task.status = 'planned';
 
+            const old = { progress: task.progress, status: task.status };
+            task.progress = val;
             saveGanttState();
+            saveTaskToSupabase(taskId, { progress: val, status: task.status }, old);
             closeProgressPopover();
 
             const badge = document.getElementById(`badge-${taskId}`);
@@ -2042,8 +2248,8 @@
             }
         });
 
-        // Initialize
-        renderGantt();
+        // Initialize — load from Supabase, fallback to localStorage
+        loadFromSupabase();
 
         // --- Exportação Print-Ready ---
         async function downloadGantt(type) {
