@@ -79,8 +79,8 @@
 
         /* Modal Styles Responsive */
         .modal-overlay { background-color: rgba(30, 50, 80, 0.95); backdrop-filter: blur(5px); }
-        /* Ajuste de altura máxima para mobile landscape */
-        .modal-content { max-height: 90vh; height: auto; width: 95vw; max-width: 1200px; overflow: hidden; background: #F3F4F6; display: flex; flex-direction: column; }
+        .modal-content { max-height: 90vh; height: auto; width: 95vw; max-width: 1200px; overflow: hidden; background: #F3F4F6; display: flex; flex-direction: column; border-radius: 1.5rem; }
+        @media (max-width: 768px) { .modal-content { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; } }
         
         .preview-container { 
             background-image: radial-gradient(#E5E7EB 1px, transparent 1px); 
@@ -92,7 +92,9 @@
         @media (min-width: 768px) { .preview-container { padding: 2rem; } }
 
         /* Tabs Sticky Logic */
-        .sticky-tabs { position: sticky; top: 52px; z-index: 40; padding: 4px 0; }
+        .sticky-tabs { position: sticky; top: 0px; z-index: 40; padding: 4px 0; background: #0f2942; -ms-overflow-style: none; scrollbar-width: none; }
+        .sticky-tabs::-webkit-scrollbar { display: none; }
+        @media (min-width: 768px) { .sticky-tabs { top: 52px; background: transparent; } }
         .tab-btn { color: rgba(255,255,255,0.5); border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; padding-bottom: 0.6rem; padding-top: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; }
         .tab-btn:hover { color: var(--ungc-gold); }
         .tab-btn.active { color: var(--ungc-gold); border-bottom-color: var(--ungc-gold); font-weight: 900; }
@@ -114,7 +116,8 @@
         /* ========================================== */
         /* GANTT CHART                                */
         /* ========================================== */
-        .gantt-wrapper { overflow-x: auto; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: var(--ungc-surface); -webkit-overflow-scrolling: touch; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .gantt-wrapper { overflow-x: auto; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: var(--ungc-surface); -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        @media (max-width: 768px) { .gantt-wrapper { border-radius: 1rem; } }
         .gantt-inner { min-width: 940px; position: relative; }
         .gantt-body { position: relative; }
 
@@ -2089,9 +2092,9 @@
 
             const modal = document.createElement('div');
             modal.id = 'add-task-modal';
-            modal.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(15,41,66,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;';
+            modal.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(15,41,66,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
             modal.innerHTML = `
-                <div style="background:#1E3250;border:1px solid rgba(255,255,255,0.12);border-radius:1.5rem;padding:28px;width:100%;max-width:440px;box-shadow:0 25px 60px rgba(0,0,0,0.5);animation:fadeIn 0.18s ease;">
+                <div style="background:#1E3250;border:1px solid rgba(255,255,255,0.12);border-radius:1.5rem;padding:28px;width:100%;max-width:380px;box-sizing:border-box;box-shadow:0 25px 60px rgba(0,0,0,0.5);animation:fadeIn 0.18s ease;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                         <h3 style="color:white;font-size:0.85rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;">＋ Nova Tarefa</h3>
                         <span style="font-size:0.65rem;color:#CCB146;font-weight:700;">${phaseName}</span>
@@ -2216,14 +2219,30 @@
             document.body.appendChild(pop);
             _activePopover = taskId;
 
-            // Position (adjust logic to prevent overflow with slightly larger popover)
-            const rect = event.currentTarget.getBoundingClientRect();
-            let top  = rect.bottom + 10;
-            let left = rect.left;
-            if (left + 280 > window.innerWidth)  left = window.innerWidth - 280;
-            if (top  + 180 > window.innerHeight)  top  = rect.top - 180;
-            pop.style.top  = top  + 'px';
-            pop.style.left = left + 'px';
+            // Position (Mobile Center vs Desktop Floating)
+            if (window.innerWidth <= 768) {
+                pop.style.position = 'fixed';
+                pop.style.top = '50%';
+                pop.style.left = '50%';
+                pop.style.transform = 'translate(-50%, -50%)';
+                pop.style.width = '85%';
+                pop.style.maxWidth = '320px';
+                
+                const overlay = document.createElement('div');
+                overlay.id = 'progress-popover-overlay';
+                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,25,47,0.7);z-index:199;backdrop-filter:blur(4px);';
+                overlay.addEventListener('click', closeProgressPopover);
+                document.body.appendChild(overlay);
+            } else {
+                pop.style.width = '260px'; // wider to fit dates
+                const rect = event.currentTarget.getBoundingClientRect();
+                let top  = rect.bottom + 10;
+                let left = rect.left;
+                if (left + 280 > window.innerWidth)  left = window.innerWidth - 280;
+                if (top  + 180 > window.innerHeight)  top  = rect.top - 180;
+                pop.style.top  = top  + 'px';
+                pop.style.left = left + 'px';
+            }
 
             // Live preview only updates text now, since re-rendering Gantt handles the bar
             document.getElementById(`slider-${taskId}`).addEventListener('input', e => {
@@ -2272,6 +2291,8 @@
         function closeProgressPopover() {
             const el = document.getElementById('progress-popover');
             if (el) el.remove();
+            const ov = document.getElementById('progress-popover-overlay');
+            if (ov) ov.remove();
             _activePopover = null;
         }
 
