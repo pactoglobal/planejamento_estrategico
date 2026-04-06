@@ -218,8 +218,33 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen relative">
 
+    <!-- Auth Overlay (Passwordless) -->
+    <div id="auth-overlay" class="fixed inset-0 z-[100] bg-[#0A192F] flex flex-col items-center justify-center p-4">
+        <div class="bg-[#1E3250] border border-white/10 rounded-2xl p-8 max-w-sm w-full shadow-2xl flex flex-col gap-4 text-center animate-fade-in">
+            <div class="flex justify-center mb-2">
+                <div class="w-12 h-12 bg-[#CCB146]/20 text-[#CCB146] rounded-full flex items-center justify-center">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                </div>
+            </div>
+            <h2 class="text-lg font-black text-white uppercase tracking-widest">Painel Protegido</h2>
+            <p class="text-xs text-white/50 mb-2">Insira seu e-mail corporativo para receber um código de acesso momentâneo.</p>
+            
+            <!-- Step 1: Request -->
+            <div id="auth-step-1" class="flex flex-col gap-3">
+                <input type="email" id="auth-email" placeholder="E-mail" class="bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#009EDB]">
+                <button onclick="requestAuthCode()" id="btn-request-auth" class="bg-[#009EDB] text-white font-bold rounded-lg py-3 hover:bg-[#0080B8] transition-colors">Receber Código</button>
+            </div>
+
+            <!-- Step 2: Verify -->
+            <div id="auth-step-2" class="flex flex-col gap-3 hidden">
+                <input type="text" id="auth-code" placeholder="000000" class="bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-xl text-white placeholder-white/20 text-center tracking-[0.5em] font-mono focus:outline-none focus:border-[#009EDB]" maxlength="6">
+                <button onclick="verifyAuthCode()" id="btn-verify-auth" class="bg-[#059669] text-white font-bold rounded-lg py-3 hover:bg-green-700 transition-colors uppercase tracking-widest text-xs">Acessar</button>
+                <button onclick="document.getElementById('auth-step-1').classList.remove('hidden'); document.getElementById('auth-step-2').classList.add('hidden');" class="text-xs text-white/40 hover:text-white mt-1">Voltar</button>
+            </div>
+        </div>
+    </div>
     <!-- ========================================== -->
     <!-- TEMPLATES DE COMPONENTES (Sync DS v13)     -->
     <!-- ========================================== -->
@@ -2279,8 +2304,67 @@
             }
         });
 
-        // Initialize — load from Supabase, fallback to localStorage
-        loadFromSupabase();
+        // ==========================================
+        // AUTHENTICATION LOGIC (Passwordless)
+        // ==========================================
+
+        async function initAuth() {
+            const { data: { session } } = await db.auth.getSession();
+            if (session) {
+                document.getElementById('auth-overlay').style.display = 'none';
+                loadFromSupabase();
+            } else {
+                document.getElementById('auth-overlay').style.display = 'flex';
+                lucide.createIcons();
+            }
+        }
+
+        async function requestAuthCode() {
+            const email = document.getElementById('auth-email').value.trim();
+            if(!email) return alert('Digite seu e-mail.');
+            
+            const btn = document.getElementById('btn-request-auth');
+            btn.textContent = 'Enviando...';
+            btn.disabled = true;
+
+            const { error } = await db.auth.signInWithOtp({ email });
+            
+            btn.disabled = false;
+            btn.textContent = 'Receber Código';
+
+            if (error) {
+                alert('Erro: ' + error.message);
+            } else {
+                document.getElementById('auth-step-1').classList.add('hidden');
+                document.getElementById('auth-step-2').classList.remove('hidden');
+                document.getElementById('auth-code').focus();
+            }
+        }
+
+        async function verifyAuthCode() {
+            const email = document.getElementById('auth-email').value.trim();
+            const token = document.getElementById('auth-code').value.trim();
+            if(!token || token.length < 6) return alert('Digite o código de 6 dígitos enviado pro seu email.');
+
+            const btn = document.getElementById('btn-verify-auth');
+            btn.textContent = 'Verificando...';
+            btn.disabled = true;
+
+            const { data, error } = await db.auth.verifyOtp({ email, token, type: 'email' });
+            
+            btn.disabled = false;
+            btn.textContent = 'Acessar';
+
+            if (error) {
+                alert('Código inválido: ' + error.message);
+            } else if (data.session) {
+                document.getElementById('auth-overlay').style.display = 'none';
+                loadFromSupabase();
+            }
+        }
+
+        // Initialize App
+        initAuth();
 
         // --- Exportação Print-Ready ---
         async function downloadGantt(type) {
