@@ -1695,13 +1695,19 @@
                 const saved = localStorage.getItem('gantt_state_mkt_v2');
                 if (!saved) return;
                 const state = JSON.parse(saved);
+                let needsSave = false;
                 ganttData.forEach(p => p.tasks.forEach(t => {
                     if (state[t.id]) {
                         t.progress = state[t.id].progress ?? t.progress;
                         t.status   = state[t.id].status   ?? t.status;
-                        t.name     = state[t.id].name     ?? t.name;
+                        if (state[t.id].name) {
+                            let cleanedName = state[t.id].name.replace(/\s*v3|v4\s*/gi, '').trim();
+                            if (cleanedName !== state[t.id].name) needsSave = true;
+                            t.name = cleanedName;
+                        }
                     }
                 }));
+                if (needsSave) saveGanttState(); // Atualiza o localStorage com nomes limpos
             } catch(e) { /* ignore */ }
         }
 
