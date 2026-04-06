@@ -220,6 +220,20 @@
 </head>
 <body class="flex flex-col min-h-screen relative">
 
+    <!-- Brand Toast / Modal de Avisos -->
+    <div id="brand-toast" class="fixed top-10 left-1/2 -translate-x-1/2 z-[200] hidden bg-[#1E3250] border-l-4 border-[#009EDB] text-white px-6 py-4 rounded-xl shadow-2xl flex items-center justify-between gap-4 w-[90%] max-w-sm transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <div id="toast-icon"></div>
+            <div>
+                <h4 id="toast-title" class="text-sm font-bold uppercase tracking-wider mb-1"></h4>
+                <p id="toast-msg" class="text-xs text-white/70 leading-snug"></p>
+            </div>
+        </div>
+        <button onclick="document.getElementById('brand-toast').classList.add('hidden')" class="text-white/40 hover:text-white transition-colors shrink-0 p-2">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
     <!-- Auth Overlay (Passwordless) -->
     <div id="auth-overlay" class="fixed inset-0 z-[100] bg-[#0A192F] flex flex-col items-center justify-center p-4">
         <div class="w-full max-w-sm mb-6 flex justify-center">
@@ -2311,6 +2325,30 @@
         // AUTHENTICATION LOGIC (Passwordless)
         // ==========================================
 
+        function showBrandToast(title, msg, type='info') {
+            const toast = document.getElementById('brand-toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = msg;
+            
+            let iconHtml = '';
+            if (type === 'error') {
+                toast.style.borderColor = '#EF4444'; // Red
+                iconHtml = '<div class="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>';
+            } else if (type === 'success') {
+                toast.style.borderColor = '#10B981'; // Green
+                iconHtml = '<div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center"><i data-lucide="mail-check" class="w-5 h-5"></i></div>';
+            } else {
+                toast.style.borderColor = '#009EDB'; // Blue
+                iconHtml = '<div class="w-10 h-10 rounded-full bg-[#009EDB]/10 text-[#009EDB] flex items-center justify-center"><i data-lucide="info" class="w-5 h-5"></i></div>';
+            }
+            document.getElementById('toast-icon').innerHTML = iconHtml;
+            lucide.createIcons();
+            
+            toast.classList.remove('hidden');
+            // Auto hide after 6s
+            setTimeout(() => { toast.classList.add('hidden'); }, 6000);
+        }
+
         async function initAuth() {
             const { data: { session } } = await db.auth.getSession();
             if (session) {
@@ -2324,7 +2362,7 @@
 
         async function requestAuthCode() {
             const email = document.getElementById('auth-email').value.trim();
-            if(!email) return alert('Digite seu e-mail.');
+            if(!email) return showBrandToast('Campo Vazio', 'Por favor, insira o seu e-mail corporativo.', 'error');
             
             const btn = document.getElementById('btn-request-auth');
             btn.textContent = 'Enviando...';
@@ -2336,18 +2374,19 @@
             btn.textContent = 'Receber Código';
 
             if (error) {
-                alert('Erro: ' + error.message);
+                showBrandToast('Erro no Envio', error.message, 'error');
             } else {
                 document.getElementById('auth-step-1').classList.add('hidden');
                 document.getElementById('auth-step-2').classList.remove('hidden');
                 document.getElementById('auth-code').focus();
+                showBrandToast('Código Enviado', 'E-mail enviado! Pode levar de 1 a 2 minutos.', 'success');
             }
         }
 
         async function verifyAuthCode() {
             const email = document.getElementById('auth-email').value.trim();
             const token = document.getElementById('auth-code').value.trim();
-            if(!token || token.length < 6) return alert('Digite o código de 6 dígitos enviado pro seu email.');
+            if(!token || token.length < 6) return showBrandToast('Atenção', 'Digite o código de 6 dígitos enviado para o seu e-mail.', 'info');
 
             const btn = document.getElementById('btn-verify-auth');
             btn.textContent = 'Verificando...';
@@ -2359,9 +2398,10 @@
             btn.textContent = 'Acessar';
 
             if (error) {
-                alert('Código inválido: ' + error.message);
+                showBrandToast('Falha na Validação', 'O código de acesso é inválido ou expirou.', 'error');
             } else if (data.session) {
                 document.getElementById('auth-overlay').style.display = 'none';
+                showBrandToast('Acesso Liberado', 'Autenticação concluída com sucesso.', 'success');
                 loadFromSupabase();
             }
         }
