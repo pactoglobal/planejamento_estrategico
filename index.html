@@ -1655,18 +1655,18 @@
                 phase: 'Nova versão do site', id: 'fase1',
                 phaseMonths: [0, 11], color: '#E81C60',
                 tasks: [
-                    { id:'t1', name:'Nova pág Adesão e Home',    tag:'SITE', months:[0,0], progress:0, status:'planned' },
-                    { id:'t2', name:'Inicio de coleta de infos',    tag:'RESEARCH', months:[1,1], progress:0, status:'planned' },
-                    { id:'t3', name:'Página da CoP',             tag:'SITE', months:[2,2], progress:0, status:'planned' },
-                    { id:'t4', name:'Menu, Footer, Header, Sobre',  tag:'SITE', months:[3,3], progress:0, status:'planned' },
-                    { id:'t5', name:'Eventos, Notícias, Atuação...',tag:'SITE', months:[4,4], progress:0, status:'planned' },
-                    { id:'t6', name:'Programas & Publicações',   tag:'SITE', months:[5,5], progress:0, status:'planned' },
-                    { id:'t7', name:'Participação',              tag:'SITE', months:[6,6], progress:0, status:'planned' },
-                    { id:'t8', name:'Empresas Participantes',    tag:'SITE', months:[7,7], progress:0, status:'planned' },
-                    { id:'t9', name:'Refinamento SEO Técnico',      tag:'SEO', months:[8,8], progress:0, status:'planned' },
-                    { id:'t10',name:'Estratégia GEO / Localizada',  tag:'GEO', months:[9,9], progress:0, status:'planned'},
-                    { id:'t11',name:'Integração BI & Analytics',    tag:'DADOS', months:[10,10], progress:0, status:'planned'},
-                    { id:'t12',name:'Lançamento Ecossistema Full',  tag:'INFRA', months:[11,11], progress:0, status:'planned'}
+                    { id:'t1',  name:'Nova pág Adesão e Home',                                                                                              tag:'SITE',  months:[0,0],    progress:100, status:'done'    },
+                    { id:'t2',  name:'Inicio de coleta de informações',                                                                                     tag:'RESEARCH', months:[1,5], progress:60,  status:'active'  },
+                    { id:'t3',  name:'Página da CoP',                                                                                                       tag:'SITE',  months:[2,3],    progress:80,  status:'active'  },
+                    { id:'t4',  name:'Menu Pacto Global, Footer, Header, Sobre Nós, Como Aderir',                                                           tag:'SITE',  months:[3,5],    progress:0,   status:'planned' },
+                    { id:'t5',  name:'Nossos Eventos, Notícias & Sala de Imprensa, Nossa Atuação, Ambição 2030, Movimentos, Plataformas, Academy, Cursos & Workshops', tag:'SITE', months:[4,7], progress:0, status:'planned' },
+                    { id:'t6',  name:'Programas & Publicações',                                                                                             tag:'SITE',  months:[5,6],    progress:0,   status:'planned' },
+                    { id:'t7',  name:'Participação',                                                                                                        tag:'SITE',  months:[6,6],    progress:0,   status:'planned' },
+                    { id:'t8',  name:'Empresas Participantes & Patrocínios',                                                                                tag:'SITE',  months:[7,8],    progress:0,   status:'planned' },
+                    { id:'t9',  name:'Refinamento SEO Técnico',                                                                                             tag:'SEO',   months:[3,8],    progress:0,   status:'planned' },
+                    { id:'t10', name:'Estratégia GEO / Localizada',                                                                                         tag:'GEO',   months:[3,9],    progress:0,   status:'planned' },
+                    { id:'t11', name:'Integração BI & Analytics',                                                                                           tag:'DADOS', months:[3,9],    progress:0,   status:'planned' },
+                    { id:'t12', name:'Lançamento Ecossistema Completo',                                                                                     tag:'INFRA', months:[0,11],   progress:5,   status:'active'  }
                 ]
             },
             {
@@ -1690,29 +1690,36 @@
             }
         ];
 
+        const GANTT_SCHEMA_V = 3; // Increment this when task IDs/months change to force a fresh load
+
         function loadGanttState() {
             try {
                 const saved = localStorage.getItem('gantt_state_mkt_v2');
                 if (!saved) return;
                 const state = JSON.parse(saved);
+                // If schema version changed (new task definitions), discard cached data
+                if (state.__schema !== GANTT_SCHEMA_V) {
+                    localStorage.removeItem('gantt_state_mkt_v2');
+                    return;
+                }
                 let needsSave = false;
                 ganttData.forEach(p => p.tasks.forEach(t => {
                     if (state[t.id]) {
                         t.progress = state[t.id].progress ?? t.progress;
                         t.status   = state[t.id].status   ?? t.status;
                         if (state[t.id].name) {
-                            let cleanedName = state[t.id].name.replace(/\s*v3|v4\s*/gi, '').trim();
+                            let cleanedName = state[t.id].name.replace(/\s*v[34]\s*/gi, '').trim();
                             if (cleanedName !== state[t.id].name) needsSave = true;
                             t.name = cleanedName;
                         }
                     }
                 }));
-                if (needsSave) saveGanttState(); // Atualiza o localStorage com nomes limpos
+                if (needsSave) saveGanttState();
             } catch(e) { /* ignore */ }
         }
 
         function saveGanttState() {
-            const state = {};
+            const state = { __schema: GANTT_SCHEMA_V };
             ganttData.forEach(p => p.tasks.forEach(t => {
                 state[t.id] = { progress: t.progress, status: t.status, name: t.name };
             }));
