@@ -1670,13 +1670,13 @@
                 ]
             },
             {
-                phase: 'Produção dos materiais Institucionais', id: 'fase2',
-                phaseMonths: [0, 11], color: '#E81C60', 
+                phase: 'Produção de Materiais Institucionais', id: 'fase2',
+                phaseMonths: [3, 10], color: '#7C3AED',
                 tasks: [
-                    { id:'m1', name:'Lorem ipsum dolor sit amet...', tag:'CONTEÚDO', months:[3,4], progress:0, status:'planned' },
-                    { id:'m2', name:'Morbi porta ipsum erat...',     tag:'CONTEÚDO', months:[5,6], progress:0, status:'planned' },
-                    { id:'m3', name:'Lorem ipsum dolor sit amet...', tag:'CONTEÚDO', months:[7,8], progress:0, status:'planned' },
-                    { id:'m4', name:'Morbi porta ipsum erat...',     tag:'CONTEÚDO', months:[9,10], progress:0, status:'planned' }
+                    { id:'m1', name:'Assets Padrões de Divulgação de Eventos',             tag:'DESIGN', months:[3,4],  progress:0, status:'planned' },
+                    { id:'m2', name:'Banco de Imagens para Notícias, Releases e Publicações', tag:'DESIGN', months:[5,6],  progress:0, status:'planned' },
+                    { id:'m3', name:'Assets da Ambição 2030 e Plataformas de Ação',          tag:'DESIGN', months:[7,8],  progress:0, status:'planned' },
+                    { id:'m4', name:'Assets de Divulgação de Vagas',                         tag:'DESIGN', months:[9,10], progress:0, status:'planned' }
                 ]
             },
             {
@@ -1690,7 +1690,7 @@
             }
         ];
 
-        const GANTT_SCHEMA_V = 3; // Increment this when task IDs/months change to force a fresh load
+        const GANTT_SCHEMA_V = 4; // Increment this when task IDs/months change to force a fresh load
 
         function loadGanttState() {
             try {
