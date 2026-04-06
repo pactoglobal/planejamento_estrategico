@@ -115,31 +115,52 @@
         /* GANTT CHART                                */
         /* ========================================== */
         .gantt-wrapper { overflow-x: auto; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); background: var(--ungc-surface); -webkit-overflow-scrolling: touch; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .gantt-inner { min-width: 860px; position: relative; }
+        .gantt-inner { min-width: 940px; position: relative; }
         .gantt-body { position: relative; }
 
         /* Month header */
-        .gantt-month-header { display: grid; grid-template-columns: 200px repeat(12, 1fr); background: #162840; border-bottom: 3px solid var(--ungc-gold); position: sticky; top: 0; z-index: 10; }
+        .gantt-month-header { display: grid; grid-template-columns: 240px repeat(12, 1fr); background: #162840; border-bottom: 3px solid var(--ungc-gold); position: sticky; top: 0; z-index: 10; }
         .gantt-label-header { padding: 12px 16px; color: rgba(255,255,255,0.6); font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; border-right: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; }
         .gantt-month-cell { padding: 10px 4px; text-align: center; color: rgba(255,255,255,0.55); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-right: 1px solid rgba(255,255,255,0.05); position: relative; transition: background 0.2s; }
         .gantt-month-cell.is-current { color: #009EDB; font-weight: 900; background: rgba(0,158,219,0.12); }
 
         /* Phase rows */
-        .gantt-phase-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .gantt-phase-label { padding: 8px 14px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: white; display: flex; align-items: center; gap: 6px; border-right: 1px solid rgba(255,255,255,0.15); min-height: 36px; }
+        .gantt-phase-row { display: grid; grid-template-columns: 240px 1fr; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .gantt-phase-label { padding: 6px 12px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: white; display: flex; align-items: center; gap: 6px; border-right: 1px solid rgba(255,255,255,0.15); min-height: 48px; }
+        .gantt-phase-label-capsule { background: var(--ungc-blue); padding: 4px 14px; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); width: calc(100% - 12px); margin: 0 6px; display: flex; align-items: center; justify-content: center; text-align: center;}
+        
         .gantt-phase-timeline { display: grid; grid-template-columns: repeat(12, 1fr); }
-        .gantt-phase-cell { min-height: 36px; border-right: 1px solid rgba(255,255,255,0.06); }
+        .gantt-phase-cell { min-height: 48px; border-right: 1px solid rgba(255,255,255,0.06); }
         .gantt-phase-cell.active-month { border-bottom: 2px solid currentColor; }
 
         /* Task rows */
-        .gantt-task-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; position: relative; }
+        .gantt-task-row { display: grid; grid-template-columns: 240px 1fr; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; position: relative; }
         .gantt-task-row:hover { background: rgba(255,255,255,0.04); }
         .gantt-task-row:nth-child(even) { background: rgba(255,255,255,0.02); }
         .gantt-task-row:nth-child(even):hover { background: rgba(255,255,255,0.05); }
 
-        .gantt-task-label { padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 5px; min-height: 58px; justify-content: center; }
-        .gantt-task-name { font-size: 0.72rem; font-weight: 700; color: #AECFE6; line-height: 1.25; cursor: text; border-radius: 3px; transition: outline 0.15s; }
+        .gantt-task-label { padding: 8px 12px; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 5px; min-height: 70px; justify-content: center; }
+        .gantt-task-capsule { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 10px 14px; width: 100%; height: 100%; display: flex; flex-direction: column; gap: 6px; transition: all 0.2s; box-shadow: inset 0 1px 1px rgba(255,255,255,0.03); }
+        .gantt-task-row:hover .gantt-task-capsule { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); transform: translateX(2px); }
+        
+        .gantt-item-capsule { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 2px 8px; font-size: 0.62rem; font-weight: 700; color: #AECFE6; white-space: normal; line-height: 1.2; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .gantt-task-name { font-size: 0.75rem; font-weight: 800; color: #E2E8F0; line-height: 1.35; cursor: text; border-radius: 3px; transition: outline 0.15s; display: flex; flex-wrap: wrap; gap: 4px; }
         .gantt-task-name:hover { text-decoration: underline dotted var(--ungc-gold); }
+
+        /* Version Signatures */
+        .version-badge { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 0.5rem; font-weight: 900; color: white; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); margin-right: 4px; }
+        .v3-badge { background: #1a5276; }
+        .v3-capsule { border-left: 3px solid #1a5276 !important; }
+        .v4-badge { background: #CCB146; color: #1E3250; border-color: #1E3250/20; }
+        .v4-capsule { border-left: 5px solid #CCB146 !important; background: rgba(204,177,70,0.08) !important; animation: v4-pulse 2s infinite ease-in-out; }
+        @keyframes v4-pulse { 0% { box-shadow: 0 0 0 0 rgba(204,177,70,0.1); } 50% { box-shadow: 0 0 10px 0 rgba(204,177,70,0.2); } 100% { box-shadow: 0 0 0 0 rgba(204,177,70,0.1); } }
+
+        /* Column markers */
+        .v4-marker { position: absolute; top: -1px; bottom: 0; background: rgba(204,177,70,0.04); border-left: 1px dashed rgba(204,177,70,0.4); pointer-events: none; z-index: 1; }
+        .v4-indicator-label { position: absolute; top: -14px; left: 0; background: #CCB146; color: #1E3250; font-size: 0.5rem; font-weight: 900; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.08em; z-index: 20; transform: translateX(-50%); box-shadow: 0 2px 8px rgba(204,177,70,0.3); }
+
+        /* Bar labels */
+        .gantt-bar-label { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 0.58rem; font-weight: 900; color: white; white-space: nowrap; pointer-events: none; z-index: 5; text-shadow: 0 1px 2px rgba(0,0,0,0.4); opacity: 0.9; max-width: calc(100% - 30px); overflow: hidden; text-overflow: ellipsis; }
 
         .gantt-cells { display: grid; grid-template-columns: repeat(12, 1fr); position: relative; }
         .gantt-cell { border-right: 1px solid rgba(255,255,255,0.03); min-height: 58px; position: relative; }
@@ -823,7 +844,7 @@
     <header class="fixed w-full z-50 bg-[#0f2942]/90 backdrop-blur-xl py-3 shadow-[0_10px_30px_rgba(0,0,0,0.3)] border-b border-white/5">
         <div class="container mx-auto px-4 md:px-8 lg:px-12 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <img src="https://raw.githubusercontent.com/pactoglobal/planejamento_estrategico/main/Brazil_logotype_translation_white.png" alt="Pacto Global" class="h-7 md:h-9 w-auto" onerror="this.style.display='none'"/>
+                <img src="./assets/img/Brazil_logotype_translation_white.png" alt="Pacto Global" class="h-7 md:h-9 w-auto" onerror="this.style.display='none'"/>
             </div>
             <h1 class="text-white font-black text-[10px] md:text-xs uppercase tracking-[0.25em]">Planejamento Estratégico <span class="text-[#CCB146]">2026</span></h1>
             <div class="text-[9px] font-bold text-[#0f2942] bg-[#CCB146] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-2">
@@ -1634,14 +1655,14 @@
                 phase: 'Nova versão do site', id: 'fase1',
                 phaseMonths: [0, 11], color: '#E81C60',
                 tasks: [
-                    { id:'t1', name:'Nova pág Adesão e Home v3',    tag:'SITE', months:[0,0], progress:0, status:'planned' },
+                    { id:'t1', name:'Nova pág Adesão e Home',    tag:'SITE', months:[0,0], progress:0, status:'planned' },
                     { id:'t2', name:'Inicio de coleta de infos',    tag:'RESEARCH', months:[1,1], progress:0, status:'planned' },
-                    { id:'t3', name:'Página da CoP v4',             tag:'SITE', months:[2,2], progress:0, status:'planned' },
+                    { id:'t3', name:'Página da CoP',             tag:'SITE', months:[2,2], progress:0, status:'planned' },
                     { id:'t4', name:'Menu, Footer, Header, Sobre',  tag:'SITE', months:[3,3], progress:0, status:'planned' },
                     { id:'t5', name:'Eventos, Notícias, Atuação...',tag:'SITE', months:[4,4], progress:0, status:'planned' },
-                    { id:'t6', name:'Programas & Publicações v4',   tag:'SITE', months:[5,5], progress:0, status:'planned' },
-                    { id:'t7', name:'Participação v4',              tag:'SITE', months:[6,6], progress:0, status:'planned' },
-                    { id:'t8', name:'Empresas Participantes v4',    tag:'SITE', months:[7,7], progress:0, status:'planned' },
+                    { id:'t6', name:'Programas & Publicações',   tag:'SITE', months:[5,5], progress:0, status:'planned' },
+                    { id:'t7', name:'Participação',              tag:'SITE', months:[6,6], progress:0, status:'planned' },
+                    { id:'t8', name:'Empresas Participantes',    tag:'SITE', months:[7,7], progress:0, status:'planned' },
                     { id:'t9', name:'Refinamento SEO Técnico',      tag:'SEO', months:[8,8], progress:0, status:'planned' },
                     { id:'t10',name:'Estratégia GEO / Localizada',  tag:'GEO', months:[9,9], progress:0, status:'planned'},
                     { id:'t11',name:'Integração BI & Analytics',    tag:'DADOS', months:[10,10], progress:0, status:'planned'},
@@ -1776,12 +1797,16 @@
                 const phaseSpan = pe - ps + 1;
 
                 // Phase header row
-                html += `<div class="gantt-phase-row" style="background:${phase.color}18; border-left:3px solid ${phase.color};">
-                    <div class="gantt-phase-label" style="background:${phase.color};">${phase.phase}</div>
+                html += `<div class="gantt-phase-row" style="background:${phase.color}08; border-left:4px solid ${phase.color};">
+                    <div class="gantt-phase-label">
+                        <div class="gantt-phase-label-capsule" style="background:${phase.color}; shadow-color: ${phase.color}44;">
+                            ${phase.phase}
+                        </div>
+                    </div>
                     <div class="gantt-phase-timeline">
                         ${MONTHS.map((_, i) => {
                             const inRange = i >= ps && i <= pe;
-                            return `<div class="gantt-phase-cell" style="${inRange ? `background:${phase.color}22; border-bottom:2px solid ${phase.color}55;` : ''}"></div>`;
+                            return `<div class="gantt-phase-cell" style="${inRange ? `background:${phase.color}15; border-bottom:2px solid ${phase.color}44;` : ''}"></div>`;
                         }).join('')}
                     </div>
                 </div>`;
@@ -1793,19 +1818,34 @@
                     const barColor = getStatusColor(task.status);
                     const barLeft  = `calc(${ts} / 12 * 100% + 3px)`;
                     const barWidth = `calc(${taskSpan} / 12 * 100% - 6px)`;
+                    
+                    // Logic for versioning based on month (April = index 3 = V4)
+                    const isV4 = ts >= 3;
+                    const versionClass = isV4 ? 'v4-capsule' : 'v3-capsule';
+                    const versionBadge = isV4 ? '<div class="version-badge v4-badge">V.4</div>' : '<div class="version-badge v3-badge">V.3</div>';
+
+                    // Split name if it has commas
+                    const items = task.name.split(',').map(s => s.trim());
+                    const nameHtml = items.map(item => `<span class="gantt-item-capsule">${item}</span>`).join('');
 
                     html += `<div class="gantt-task-row">
                         <div class="gantt-task-label">
-                            <div class="gantt-task-name"
-                                 id="name-${task.id}"
-                                 ondblclick="editTaskName('${task.id}', this)"
-                                 title="Duplo clique para renomear">${task.name}</div>
-                            <div style="display:flex;align-items:center;gap:5px;">
-                                <span style="font-size:0.52rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:${phase.color};">${task.tag}</span>
-                                <span class="status-badge ${STATUS_CLASSES[task.status]}"
-                                      id="badge-${task.id}"
-                                      onclick="cycleStatus('${task.id}')"
-                                      title="Clique para mudar status">${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}</span>
+                            <div class="gantt-task-capsule ${versionClass}">
+                                <div style="display:flex;align-items:flex-start;gap:2px;">
+                                    ${versionBadge}
+                                    <div class="gantt-task-name"
+                                         id="name-${task.id}"
+                                         ondblclick="editTaskName('${task.id}', this)"
+                                         title="Duplo clique para renomear">${nameHtml}</div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;margin-top:auto;">
+                                    <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:${phase.color};opacity:0.9;">${task.tag}</span>
+                                    <span class="status-badge ${STATUS_CLASSES[task.status]}"
+                                          id="badge-${task.id}"
+                                          onclick="cycleStatus('${task.id}')"
+                                          title="Clique para mudar status"
+                                          style="font-size: 0.5rem; padding: 2px 6px;">${STATUS_ICONS[task.status]} ${STATUS_LABELS[task.status]}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="gantt-cells">
@@ -1813,10 +1853,11 @@
                             <div class="gantt-bar-container"
                                  id="bar-${task.id}"
                                  onclick="openProgressPopover('${task.id}', event)"
-                                 title="${task.name} — ${task.progress}% concluído. Clique para editar."
+                                 title="${task.name} — ${task.progress}% concluído."
                                  style="left:${barLeft};width:${barWidth};background:${barColor}28;">
                                 <div class="gantt-bar-fill" id="fill-${task.id}" style="width:${task.progress}%;background:${barColor};">
-                                    ${task.progress > 14 ? `<span class="gantt-bar-pct">${task.progress}%</span>` : ''}
+                                    <span class="gantt-bar-label">${task.name}</span>
+                                    ${task.progress > 85 ? `<span class="gantt-bar-pct" style="position:relative;margin-left:auto;">${task.progress}%</span>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -1824,8 +1865,14 @@
                 });
             });
 
+            // --- V4 Start Marker (April) ---
+            const v4Left = `calc(240px + (3 / 12) * (100% - 240px))`;
+            html += `<div class="v4-marker" style="left:${v4Left}; width:calc(100% - ${v4Left});">
+                        <div class="v4-indicator-label">INÍCIO V4</div>
+                     </div>`;
+
             // --- Today line ---
-            html += `<div class="today-line" style="left:calc(200px + ${todayFrac} * (100% - 200px));"></div>`;
+            html += `<div class="today-line" style="left:calc(240px + ${todayFrac} * (100% - 240px));"></div>`;
             html += `</div>`; // close gantt-body
 
             container.innerHTML = html;
@@ -1942,6 +1989,10 @@
         function editTaskName(taskId, el) {
             const task = findTask(taskId);
             if (!task) return;
+            
+            // Show raw text for editing
+            el.textContent = task.name;
+            
             el.contentEditable = 'true';
             el.focus();
             el.style.outline = '2px solid #009EDB';
@@ -1957,8 +2008,13 @@
                 el.contentEditable = 'false';
                 el.style.outline = el.style.padding = '';
                 const newName = el.textContent.trim();
-                if (newName) { task.name = newName; saveGanttState(); }
-                else el.textContent = task.name;
+                if (newName) { 
+                    task.name = newName; 
+                    saveGanttState(); 
+                    renderGantt(); // Re-render to split into capsules again
+                } else {
+                    renderGantt(); // Restore capsules
+                }
             };
             el.onkeydown = e => {
                 if (e.key === 'Enter')  { e.preventDefault(); el.blur(); }
