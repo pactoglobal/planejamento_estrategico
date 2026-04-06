@@ -889,7 +889,8 @@
 
     
     <!-- CRM SIDEBAR -->
-    <aside id="crm-sidebar" class="w-64 flex-shrink-0 border-r border-[#1E3250] bg-[#0A192F] flex-col hidden md:flex h-full fixed md:relative z-40 transition-transform duration-300">
+    <aside id="crm-sidebar" class="w-64 flex-shrink-0 border-r border-[#1E3250] bg-[#0A192F] flex-col h-full z-40" style="display:flex; flex-direction:column;">
+
         <div class="h-16 flex items-center px-6 border-b border-[#1E3250] justify-between">
             <img src="./assets/img/Brazil_logotype_translation_white.png" alt="Pacto Global" class="h-6 brightness-0 invert" onerror="this.style.display='none'">
             <button id="btn-close-sidebar" class="md:hidden text-white/50 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -2413,41 +2414,61 @@
             // ==========================================
             // SIDEBAR MOBILE TOGGLE
             // ==========================================
-            const sidebar = document.getElementById('crm-sidebar');
-            const overlay = document.getElementById('mobile-sidebar-overlay');
-            const btnOpen = document.getElementById('btn-open-sidebar');
-            const btnClose = document.getElementById('btn-close-sidebar');
+            (function() {
+                const sidebar = document.getElementById('crm-sidebar');
+                const overlay = document.getElementById('mobile-sidebar-overlay');
+                const btnOpen = document.getElementById('btn-open-sidebar');
+                const btnClose = document.getElementById('btn-close-sidebar');
+                if (!sidebar || !overlay || !btnOpen) return;
 
-            if (btnOpen && sidebar && overlay) {
-                // Initialize state for mobile (hide it initially)
-                if (window.innerWidth < 768) {
-                    sidebar.classList.add('fixed', 'left-0', 'top-0', 'h-full', 'z-50', '-translate-x-full', 'bg-[#0A192F]');
-                    sidebar.classList.remove('hidden');
+                function isMobile() { return window.innerWidth < 768; }
+
+                function applyMobileStyles() {
+                    sidebar.style.cssText = 'display:flex; position:fixed; left:0; top:0; height:100vh; width:240px; z-index:50; background:#0A192F; transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.4,0,0.2,1); flex-direction:column;';
+                }
+                function applyDesktopStyles() {
+                    sidebar.style.cssText = 'display:flex; position:relative; flex-direction:column; flex-shrink:0;';
+                }
+
+                function initSidebar() {
+                    if (isMobile()) {
+                        applyMobileStyles();
+                        overlay.style.display = 'none';
+                    } else {
+                        applyDesktopStyles();
+                        overlay.style.display = 'none';
+                    }
                 }
 
                 function openMenu() {
-                    sidebar.classList.remove('-translate-x-full');
-                    overlay.classList.remove('hidden');
+                    sidebar.style.transform = 'translateX(0)';
+                    overlay.style.display = 'block';
                 }
                 function closeMenu() {
-                    sidebar.classList.add('-translate-x-full');
-                    overlay.classList.add('hidden');
+                    sidebar.style.transform = 'translateX(-100%)';
+                    overlay.style.display = 'none';
                 }
 
                 btnOpen.addEventListener('click', openMenu);
                 if (btnClose) btnClose.addEventListener('click', closeMenu);
                 overlay.addEventListener('click', closeMenu);
 
+                let resizeTimer;
                 window.addEventListener('resize', () => {
-                    if (window.innerWidth >= 768) {
-                        sidebar.classList.remove('fixed', 'left-0', 'top-0', 'z-50', '-translate-x-full');
-                        sidebar.classList.add('hidden', 'md:flex');
-                        overlay.classList.add('hidden');
-                    } else {
-                        sidebar.classList.add('fixed', 'left-0', 'top-0', 'z-50', '-translate-x-full');
-                    }
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
+                        if (isMobile()) {
+                            applyMobileStyles();
+                        } else {
+                            applyDesktopStyles();
+                            overlay.style.display = 'none';
+                        }
+                    }, 100);
                 });
-            }
+
+                initSidebar();
+            })();
+
 
 
             // Initialize App
